@@ -1,0 +1,122 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <h1>{{ content.title }}</h1>
+
+    {{ content.article|raw }}
+
+    <div class="event-calendar-navigation">
+        <a href="#" id="previous">Previous</a>
+        <a href="#" id="next">Next</a>
+    </div>
+    <div id="event-calendar" class="js-calendar-container"></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function () {
+            const dp = new DayPilot.Calendar("event-calendar", {
+                viewType: "Week",
+                startDate: DayPilot.Date.today(),
+                onEventClick: async args => {
+
+                    const form = [
+                        {name: "Email", id: 'email'},
+                    ];
+
+                    const modal = await DayPilot.Modal.form(form, args.e.data);
+
+                    if (modal.canceled) {
+                        return;
+                    }
+
+                    $.ajax({
+                        url: '/api/event/register',
+                        method: 'POST',
+                        data: modal.result,
+                        success: function(data) {
+                            console.log(data)
+                        }
+                    })
+                    dp.events.update(modal.result);
+
+                },
+                onBeforeEventRender: args => {
+                    args.data.barBackColor = "transparent";
+                    if (!args.data.barColor) {
+                        args.data.barColor = "#333";
+                    }
+                },
+            });
+            // dp.onEventClick = function (args) {
+            //     alert("clicked: " + args.e.id());
+            // };
+            dp.init();
+
+            const app = {
+                elements: {
+                    previous: document.getElementById('previous'),
+                    next: document.getElementById('next')
+                },
+                init() {
+                    this.addEventHandlers();
+                },
+                addEventHandlers() {
+                    this.elements.previous.addEventListener('click', (ev) => {
+                        ev.preventDefault();
+                        this.previous();
+                    });
+                    this.elements.next.addEventListener('click', (ev) => {
+                        ev.preventDefault();
+                        this.next();
+                    });
+                },
+                previous() {
+                    const startDate = dp.startDate.addDays(-7);
+                    dp.update({startDate: startDate});
+                },
+                next() {
+                    const startDate = dp.startDate.addDays(7);
+                    dp.update({startDate: startDate});
+                },
+            };
+            app.init();
+
+            $.ajax({
+                url: '/api/events/2024-02-08',
+                method: 'POST',
+                success: function (data) {
+                    $.each(data, function () {
+                        var e = new DayPilot.Event({
+                            start: new DayPilot.Date(this.dateTime),
+                            end: new DayPilot.Date(this.dateTime).addHours(this.duration),
+                            id: this.id,
+                            text: this.name,
+                            barColor: "#6aa84f"
+                        });
+                        dp.events.add(e);
+
+                        // formattedEvents.push({
+                        //     date: new Date(this.date),
+                        //     eventName: this.eventName,
+                        //     className: this.className,
+                        //     onclick(e, data) {
+                        //         console.log(data);
+                        //     },
+                        //     dateColor: "red"
+                        // })
+                    });
+
+                    // var calendar = $("#event-calendar").calendarGC({
+                    //     events: formattedEvents,
+                    //     onclickDate: function (e, data) {
+                    //         console.log(e, data);
+                    //     }
+                    // });
+                },
+            })
+        })
+    </script>
+{% endblock %}

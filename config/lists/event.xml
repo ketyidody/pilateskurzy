@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<list xmlns="http://schemas.sulu.io/list-builder/list">
+    <key>event</key>
+
+    <properties>
+        <property name="id" visibility="no" translation="sulu_admin.id">
+            <field-name>id</field-name>
+            <entity-name>App\Entity\Event</entity-name>
+        </property>
+
+        <property name="dateTime" visibility="yes" translation="app.date_time">
+            <field-name>dateTime</field-name>
+            <entity-name>App\Entity\Event</entity-name>
+        </property>
+
+        <property name="name" visibility="yes" translation="sulu_admin.name">
+            <field-name>name</field-name>
+            <entity-name>App\Entity\Event</entity-name>
+        </property>
+
+        <property name="event_type" visibility="yes" translation="app.event_type">
+            <field-name>eventType</field-name>
+            <entity-name>App\Entity\Event</entity-name>
+        </property>
+
+        <property name="capacity" visibility="yes" translation="app.capacity">
+            <field-name>capacity</field-name>
+            <entity-name>App\Entity\Event</entity-name>
+        </property>
+
+        <property name="duration" visibility="yes" translation="app.duration">
+            <field-name>duration</field-name>
+            <entity-name>App\Entity\Event</entity-name>
+        </property>
+    </properties>
+</list>

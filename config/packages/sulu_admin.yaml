@@ -1,0 +1,54 @@
+sulu_admin:
+    email: "%env(SULU_ADMIN_EMAIL)%"
+    forms:
+        directories:
+            - "%kernel.project_dir%/config/forms"
+    lists:
+        directories:
+            - "%kernel.project_dir%/config/lists"
+    resources:
+        event:
+            routes:
+                list: 'app.get_events'
+                detail: 'app.get_event'
+        event_type:
+            routes:
+                list: 'app.get_eventtypes'
+                detail: 'app.get_eventtype'
+        event_reoccurrence:
+            routes:
+                list: 'app.get_eventreoccurrences'
+                detail: 'app.get_eventreoccurrence'
+    field_type_options:
+        single_selection:
+            attendee_selection:
+                default_type: 'list_overlay'
+                resource_key: 'users'
+                types:
+                    list_overlay:
+                        adapter: 'table'
+                        list_key: 'users'
+                        display_properties:
+                            - 'id'
+                            - 'username'
+                            - 'email'
+                        icon: 'su-calendar'
+                        overlay_title: 'app.attendee'
+                        empty_text: 'app.location.no_selections'
+            event_type_selection:
+                default_type: 'list_overlay'
+                resource_key: 'event_type'
+                view:
+                    name: 'app.event_type_edit_form'
+                    result_to_view:
+                        id: 'id'
+                types:
+                    list_overlay:
+                        adapter: 'table'
+                        list_key: 'event_type'
+                        display_properties:
+                            - 'id'
+                            - 'name'
+                        icon: 'su-calendar'
+                        overlay_title: 'app.event_type'
+                        empty_text: 'app.location.no_selections'

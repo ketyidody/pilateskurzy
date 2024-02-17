@@ -1,0 +1,41 @@
+<header>
+    {% block header %}
+        <div>
+            <nav class="container navbar navbar-expand-lg main-navbar-nav navbar-dark bg-dark">
+                <a class="navbar-brand" href="">Pilateskurzy</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav nav-items-center ml-auto mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ sulu_content_root_path() }}">Domov</a>
+                        </li>
+                        {% for item in sulu_navigation_root_tree('main') %}
+                            {% if (sulu_navigation_tree(item['uuid']) is empty) %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ sulu_content_path(item.url, item.webspaceKey) }}"
+                                       title="{{ item.title }}">{{ item.title }}</a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="{{ item.uuid }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ item.title }}
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="{{ item.uuid }}">
+                                        {% for subItem in sulu_navigation_tree(item['uuid']) %}
+                                            <a class="dropdown-item black" href="{{ sulu_content_path(subItem.url, subItem.webspaceKey) }}">
+                                                {{ subItem.title }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    {% endblock %}
+</header>
