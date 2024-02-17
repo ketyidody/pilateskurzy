@@ -24,13 +24,12 @@ This project was build on [Sulu](https://sulu.io/)
 Have a look at the official [Sulu website](https://sulu.io/) for a comprehensive list of Sulus features, core values and use cases. 
 
 <h3>Build sulu</h3>
-`bin/adminconsole sulu:build dev`
+``bin/adminconsole sulu:build dev``
 
 <h3>Start a web server</h3>
-`php -S localhost:8000 -t public/ config/router.php`
+``php -S localhost:8000 -t public/ config/router.php``
 
-<h3>The admin console</h3>
-`http://127.0.0.1:8000/admin`
 
-<h3>The page</h3>
-`http://127.0.0.1:8000`
+<a href="http://127.0.0.1:8000/admin"><h3>The admin console</h3></a>
+
+<a href="http://127.0.0.1:8000"><h3>The page</h3></a>
