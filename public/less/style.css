@@ -2,6 +2,9 @@
   max-width: 100%;
   padding: 1rem 9%;
 }
+.navbar-nav {
+  flex-direction: row !important;
+}
 .main-navbar-nav .navbar-nav .nav-item a:hover {
   color: lightgray !important;
 }
@@ -12,8 +15,29 @@
   color: #fff !important;
   margin: 0 !important;
 }
+.dropdown-menu {
+  visibility: hidden;
+  opacity: 0;
+  display: block !important;
+  position: absolute !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  min-width: unset !important;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+.dropdown-menu.show {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s, opacity 0.5s linear;
+}
 .dropdown-item {
-  color: #000 !important;
+  color: #fff !important;
+  padding: 2px 20px !important;
+  transition: background-color 0.1s ease-in-out;
+}
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transition: background-color 0.2s ease-in-out;
 }
 .event-training {
   background-color: #c7c7c7;
@@ -22,5 +46,65 @@
 }
 .event-training:hover {
   transform: scale(1.2);
+}
+.calendar_green_event_inner .event-allocation-container {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.calendar_green_event_inner .event-allocation-container .event-allocation {
+  margin-bottom: 0;
+  padding: 0 5px;
+  font-weight: 400;
+}
+.calendar_green_event_inner .event-allocation-container .event-capacity {
+  margin-bottom: 0;
+  padding: 0 3px;
+}
+.event-calendar-navigation {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+}
+.event-calendar-navigation .event-calendar-navigation-item {
+  transition: all ease-in-out 0.3s;
+}
+.event-calendar-navigation .event-calendar-navigation-item:hover {
+  transform: scale(1.05);
+  transition: all ease-in-out 0.3s;
+}
+.event-calendar-navigation .event-calendar-navigation-item#previous {
+  float: left;
+}
+.event-calendar-navigation .event-calendar-navigation-item#previous::before {
+  content: "\2190";
+}
+.event-calendar-navigation .event-calendar-navigation-item#next {
+  float: right;
+}
+.event-calendar-navigation .event-calendar-navigation-item#next::after {
+  content: "\2192";
+}
+.calendar_green_event {
+  transition: all ease-in-out 0.3s;
+}
+.calendar_green_event:hover {
+  transform: scale(1.1);
+  transition: all ease-in-out 0.3s;
+}
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: all 86400s ease-in-out 0s;
+}
+.contact-form {
+  width: 50%;
+  margin: auto;
+  margin-top: 3em;
+}
+.margin-auto {
+  margin: auto;
 }
 /*# sourceMappingURL=style.css.map */

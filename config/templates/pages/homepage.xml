@@ -27,6 +27,18 @@
             <tag name="sulu.rlp.part"/>
         </property>
 
+        <property name="subtitle" type="text_line" mandatory="false">
+            <meta>
+                <title lang="en">Subtitle</title>
+                <title lang="de">Subtitel</title>
+            </meta>
+            <params>
+                <param name="headline" value="true"/>
+            </params>
+
+            <tag name="sulu.rlp.part"/>
+        </property>
+
         <property name="url" type="resource_locator" mandatory="true">
             <meta>
                 <title lang="en">Resourcelocator</title>

@@ -28,15 +28,26 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-    <!-- Pretty calendar -->
+    <!-- calendar -->
     <link rel="stylesheet" href="{{ asset('css/calendar-gc.css') }}">
     <link rel="stylesheet" href="{{ asset('css/calendar_transparent.css') }}">
     <link rel="stylesheet" href="{{ asset('css/month_transparent.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navigator_transparent.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/calendar_green.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navigator_green.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/month_green.css') }}">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('css/fullpage.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}"/>
 
     <!-- Theme style  -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('less/style.css') }}">
+
+    <!-- Main Stylesheets -->
+    <link rel="stylesheet" href="{{ asset('css/style-template.css') }}"/>
 
     {% block meta %}
         {% include "@SuluWebsite/Extension/seo.html.twig" with {
@@ -48,22 +59,23 @@
     {% endblock %}
 
     {% block style %}{% endblock %}
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
+<body class="home-page">
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
     {% include('navigation.html.twig') %}
 
-{#    <form action="{{ path('sulu_search.website_search') }}" method="GET">#}
-{#        <input name="q" type="text" placeholder="Search"/>#}
-{#        <input type="submit" value="Go"/>#}
-{#    </form>#}
 
-    <div id="page-wrap">
-        <main>
-            <div class="fh5co-advantages-outer">
-                <div class="container">
-                    {% block content %}{% endblock %}
-                </div>
-        </main>
+    <div id="fullpage">
+      {% block content %}{% endblock %}
     </div>
 
     <footer>
@@ -73,12 +85,18 @@
 
     {% block javascripts %}
         <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+                integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
         <script src="{{ asset('js/owl.carousel.js') }}"></script>
         <script src="{{ asset('js/wow.min.js') }}"></script>
         <script src="{{ asset('js/calendar-gc.js') }}"></script>
         <script src="{{ asset('js/daypilot-all.src.js') }}"></script>
         <script src="{{ asset('js/main.js') }}"></script>
+        <script src="{{ asset('js/mixitup.min.js') }}"></script>
+        <script src="{{ asset('js/masonry.pkgd.min.js') }}"></script>
+        <script src="{{ asset('js/fullpage.min.js') }}"></script>
+        <script src="{{ asset('js/main-template.js') }}"></script>
     {% endblock %}
 </body>
 </html>

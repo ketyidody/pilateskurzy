@@ -1,16 +1,23 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-    <h1>{{ content.title }}</h1>
-
-    {{ content.article|raw }}
-
-    <div class="event-calendar-navigation">
-        <a href="#" id="previous">Previous</a>
-        <a href="#" id="next">Next</a>
+    <!-- Hero section -->
+    <div class="section fp-auto-height" id="hero-section">
+        <div class="section about-section about-one set-bg" data-setbg="{{ asset('img/slider/yoga-2600-1.png') }}">
+            <div class="sp-container">
+                <div class="hero-content-eighty text-white">
+                    <h2>{{ content.title }}</h2>
+                    <div class="event-calendar-navigation">
+                        <a href="#" id="previous" class="event-calendar-navigation-item">Predchádzajúci týžden</a>
+                        <a href="#" id="next" class="event-calendar-navigation-item">Nasledujúci týžden</a>
+                    </div>
+                    <div id="event-calendar" class="js-calendar-container"></div>
+                </div>
+            </div>
+        </div>
+        {{ include('pages/partial/contact-link.html.twig') }}
     </div>
-    <div id="event-calendar" class="js-calendar-container"></div>
-
+    <!-- Hero section end -->
 {% endblock %}
 
 {% block javascripts %}
@@ -18,15 +25,21 @@
     <script type="text/javascript">
         $(function () {
             const dp = new DayPilot.Calendar("event-calendar", {
+                theme: "calendar_green",
                 viewType: "Week",
                 startDate: DayPilot.Date.today(),
+                locale: "sk-sk",
+                headerDateFormat: "dddd (dd/MM/yyyy)",
                 onEventClick: async args => {
 
                     const form = [
                         {name: "Email", id: 'email'},
                     ];
 
-                    const modal = await DayPilot.Modal.form(form, args.e.data);
+                    showAllocationOnModal(args.e.data)
+                    const modal = await DayPilot.Modal.form(form, args.e.data, {
+                        okText: 'Register',
+                    });
 
                     if (modal.canceled) {
                         return;
@@ -36,10 +49,10 @@
                         url: '/api/event/register',
                         method: 'POST',
                         data: modal.result,
-                        success: function(data) {
-                            console.log(data)
-                        }
                     })
+
+                    eventAllocation(args.e.data.id)
+
                     dp.events.update(modal.result);
 
                 },
@@ -50,9 +63,6 @@
                     }
                 },
             });
-            // dp.onEventClick = function (args) {
-            //     alert("clicked: " + args.e.id());
-            // };
             dp.init();
 
             const app = {
@@ -83,7 +93,11 @@
                 },
             };
             app.init();
+            initEvents(dp);
+        })
 
+        async function initEvents(dp)
+        {
             $.ajax({
                 url: '/api/events/2024-02-08',
                 method: 'POST',
@@ -93,30 +107,29 @@
                             start: new DayPilot.Date(this.dateTime),
                             end: new DayPilot.Date(this.dateTime).addHours(this.duration),
                             id: this.id,
-                            text: this.name,
-                            barColor: "#6aa84f"
+                            html: '<div class="event-title">' + this.name + '</div><div class="event-allocation-container"><span class="event-allocation" data-event-id="' + this.id + '"></span>/<span class="event-capacity">' + this.capacity + '</span></div>',
+                            barColor: "#6aa84f",
+                            capacity: this.capacity,
                         });
                         dp.events.add(e);
-
-                        // formattedEvents.push({
-                        //     date: new Date(this.date),
-                        //     eventName: this.eventName,
-                        //     className: this.className,
-                        //     onclick(e, data) {
-                        //         console.log(data);
-                        //     },
-                        //     dateColor: "red"
-                        // })
+                        eventAllocation(this.id);
                     });
-
-                    // var calendar = $("#event-calendar").calendarGC({
-                    //     events: formattedEvents,
-                    //     onclickDate: function (e, data) {
-                    //         console.log(e, data);
-                    //     }
-                    // });
                 },
             })
-        })
+        }
+
+        function eventAllocation(eventId) {
+            $.getJSON('/api/event/allocation/'+eventId, function(data) {
+                $('.event-allocation[data-event-id=' + eventId + ']').append(data.allocation);
+            })
+        }
+
+        function showAllocationOnModal(eventData) {
+            $.getJSON('/api/event/allocation/'+eventData.id, function(data) {
+                $('.modal_default_input').append('<div class="event-modal-allocation">');
+                $('.event-modal-allocation').html('Capacity: ' + data.allocation + '/' + eventData.capacity)
+            })
+        }
+
     </script>
 {% endblock %}

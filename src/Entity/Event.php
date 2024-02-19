@@ -40,8 +40,8 @@ class Event implements ObjectManagerAware
     #[ORM\JoinColumn(name: 'event_type_id', referencedColumnName: 'id')]
     protected ?EventType $eventType;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'events')]
-    protected Collection $attendee;
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'events', fetch: 'EAGER')]
+    protected Collection $users;
 
     protected ?ObjectManager $entityManager = null;
 
@@ -118,23 +118,23 @@ class Event implements ObjectManagerAware
     /**
      * @return mixed
      */
-    public function getAttendee()
+    public function getUsers()
     {
-        return $this->attendee;
+        return $this->users;
     }
 
     /**
      * @param mixed $attendee
      */
-    public function setAttendee($attendee): void
+    public function setUsers($users): void
     {
-        $this->attendee = $attendee;
+        $this->users = $users;
     }
 
-    public function addAttendee(User $attendee): void
+    public function addUser(User $user): void
     {
-        $attendee->addEvent($this);
-        $this->attendee->add($attendee);
+        $user->addEvent($this);
+        $this->users->add($user);
     }
 
     /**

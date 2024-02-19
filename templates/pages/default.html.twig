@@ -1,7 +1,30 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-    <h1>{{ content.title }}</h1>
+    <!-- Hero section -->
+    <div class="section fp-auto-height" id="hero-section">
+        <div class="section about-section about-one set-bg" data-setbg="{{ asset('img/slider/yoga-2600-1.png') }}">
+            <div class="sp-container">
+                <div class="hero-content text-white">
+                    <h2>{{ content.title }}</h2>
+                    <p>{{ content.description|raw }}</p>
+                    <div id="about-more" class="site-btn"><span>Read More</span></div>
+                </div>
+            </div>
+        </div>
+        {{ include('pages/partial/contact-link.html.twig') }}
+    </div>
+    <!-- Hero section end -->
 
-    {{ content.article|raw }}
+    {% if (content.article) %}
+        <!-- Testimonial section -->
+        <div id="content" class="section testimonial-section set-bg text-white" data-setbg="{{ asset('img/slider/yoga-2600-1.png') }}">
+            <div class="container">
+                <div class="testimonial-content">
+                    {{ content.article|raw }}
+                </div>
+            </div>
+        </div>
+        <!-- Testimonial section end-->
+    {% endif %}
 {% endblock %}

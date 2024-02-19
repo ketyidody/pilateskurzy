@@ -1,7 +1,30 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-    <h1>{{ content.title }}</h1>
+    <!-- Hero section -->
+    <div class="section fp-auto-height" id="hero-section">
+        <div class="hero-slider owl-carousel">
+            <div class="hs-item set-bg" data-setbg="{{ asset('img/slider/yoga-2600-2.png') }}">
+                <div class="container text-white">
+                    <h1>{{ content.title }}</h1>
+                    <h2>{{ content.subtitle }}</h2>
+                    <div id="about-more" class="site-btn"><span>Čitať viac</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num-holder" id="snh-1"></div>
+        {{ include('pages/partial/contact-link.html.twig') }}
+    </div>
+    <!-- Hero section end -->
 
-    {{ content.article|raw }}
+    <!-- About one Section -->
+    <div id="content" class="section about-section about-one set-bg" data-setbg="{{ asset('img/section-bg/yoga-2600-1.png') }}">
+        <div class="about-content-warp text-white">
+            <p>
+                {{ content.article|raw }}
+            </p>
+        </div>
+    </div>
+    <!-- About one Section end-->
+
 {% endblock %}

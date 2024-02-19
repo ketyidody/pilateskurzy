@@ -9,6 +9,9 @@ app_event_web_api:
 app_event_register_web_api:
     path: /api/event/register
     controller: App\Controller\Website\EventController::registerToEvent
+app_event_users_count_web_api:
+    path: /api/event/allocation/{eventId}
+    controller: App\Controller\Website\EventController::getAllocationForEvent
 
 
 #static:

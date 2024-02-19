@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <!-- Hero section -->
+    <div class="section fp-auto-height" id="hero-section">
+        <div class="hero-slider owl-carousel">
+            <div class="hs-item set-bg" data-setbg="{{ asset('img/slider/yoga-2600-2.png') }}">
+                <div class="container text-white">
+                    <h1>Prihlásenie</h1>
+                    <form action="#" class="contact-form">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="text" placeholder="e-mail" name="email" required>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="password" placeholder="heslo" name="password" required>
+                            </div>
+                            <div class="col-md-12">
+                                <button class="site-btn"><span>Prihlásenie</span></button>
+                            </div>
+{#                            <div class="col-md-6 margin-auto">#}
+{#                                <a href="{{ path('login') }}">Zabudnuté heslo</a>#}
+{#                            </div>#}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num-holder" id="snh-1"></div>
+        {{ include('pages/partial/contact-link.html.twig') }}
+    </div>
+    <!-- Hero section end -->
+
+    <script src="{{ asset('js/login.js') }}"></script>
+{% endblock %}

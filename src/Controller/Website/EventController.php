@@ -9,7 +9,6 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use JetBrains\PhpStorm\NoReturn;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,10 +24,8 @@ class EventController extends AbstractController
     ) {
     }
 
-    public function getEventsForMonthAction(string $month): JsonResponse
+    public function getEventsForMonthAction(Request $request): JsonResponse
     {
-        $formattedResponse = [];
-
         $qb = $this->em->createQueryBuilder();
         $res = $qb->select([
             't.id',
@@ -36,34 +33,17 @@ class EventController extends AbstractController
             't.duration',
             't.capacity',
             't.name',
-//            't.eventType',
+            'et.name as event_type',
         ])
             ->from(Event::class, 't')
+            ->join('t.eventType', 'et')
             ->where($qb->expr()->between('t.dateTime', ':fromDate', ':toDate'))
             ->setParameters([
-                'fromDate' => "2024-02-04",
-                'toDate' => "2024-02-16",
-            ])
-        ;
-
-        return $this->json($res->getQuery()->execute());
-
-        $events = $this->doctrine
-            ->getRepository(Event::class)
-            ->findBy([
-                'dateTime' => ['2024-02-08 18:27:28'],
+                'fromDate' => '2024-02-04',
+                'toDate' => '2024-02-30',
             ]);
 
-        foreach ($events as $event) {
-            $formattedResponse[$event->getId()] = [
-                'date' => $event->getDateTime(),
-                'eventName' => 'Event',
-                'className' => 'event-event',
-                'dateColor' => 'red',
-            ];
-        }
-
-        return $this->json($formattedResponse);
+        return $this->json($res->getQuery()->execute());
     }
 
     public function registerToEvent(Request $request): JsonResponse
@@ -73,12 +53,20 @@ class EventController extends AbstractController
 
         $event = $this->doctrine->getRepository(Event::class)->find($eventId);
         $user = $this->doctrine->getRepository(User::class)->findOneBy(['email' => $email]);
-        dd($event);
-        $event?->addAttendee($user);
+        $event?->addUser($user);
         $this->doctrine->getManager()->persist($event);
         $this->doctrine->getManager()->persist($user);
         $this->doctrine->getManager()->flush();
-//        $event?->save();
+
         return $this->json(['status' => 'ok']);
+    }
+
+    public function getAllocationForEvent(Request $request, $eventId): JsonResponse
+    {
+        $event = $this->doctrine->getRepository(Event::class)->find($eventId);
+
+        return $this->json([
+            'allocation' => $event?->getUsers()->count(),
+        ]);
     }
 }
