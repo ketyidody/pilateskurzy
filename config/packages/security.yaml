@@ -8,11 +8,18 @@ security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Sulu\Bundle\SecurityBundle\Entity\User: bcrypt
+        App\Entity\WebUser:
+            algorithm: auto
 
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         sulu:
             id: sulu_security.user_provider
+        app_user_provider:
+            entity:
+                class: App\Entity\WebUser
+                property: email
+
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
@@ -51,8 +58,20 @@ security:
                 authentication_required_handler: sulu_security.two_factor_authentication_required_handler
                 success_handler: sulu_security.two_factor_authentication_success_handler
                 failure_handler: sulu_security.two_factor_authentication_failure_handler
+        main:
+            lazy: true
+            provider: app_user_provider
+            form_login:
+                # "app_login" is the name of the route created previously
+                login_path: auth_login
+                check_path: auth_login
+                default_target_path: auth_profile
+                enable_csrf: true
+                username_parameter: "login[email]"
+                password_parameter: "login[password]"
 
-       #website:
+
+        #website:
        #    pattern: ^/
        #    lazy: true
        #    provider: sulu

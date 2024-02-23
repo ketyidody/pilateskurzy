@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Website;
 
 use App\Entity\Event;
-use App\Entity\User;
+use App\Entity\WebUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -52,12 +52,20 @@ class EventController extends AbstractController
         $email = $request->get('email');
 
         $event = $this->doctrine->getRepository(Event::class)->find($eventId);
-        $user = $this->doctrine->getRepository(User::class)->findOneBy(['email' => $email]);
-        $event?->addUser($user);
+        $webUser = $this->em->getRepository(WebUser::class)
+            ->findOneBy(['email' => $email]);
+        if (!$webUser instanceof WebUser) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Not logged in'
+            ]);
+        }
+        $event?->addUser($webUser);
         $this->doctrine->getManager()->persist($event);
-        $this->doctrine->getManager()->persist($user);
+        $this->doctrine->getManager()->persist($webUser);
         $this->doctrine->getManager()->flush();
 
+        // return redirect to login
         return $this->json(['status' => 'ok']);
     }
 

@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <!-- Hero section -->
+    <div class="section fp-auto-height" id="hero-section">
+        <div class="hero-slider owl-carousel">
+            <div class="hs-item set-bg" data-setbg="{{ asset('img/slider/yoga-2600-2.png') }}">
+                <div class="container text-white">
+                    <h1>Prihlásenie</h1>
+                    <form class="contact-form" action="{{ path('auth_login') }}" method="post">
+                        {% if error %}
+                            <div class="auth-error">
+                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                            </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="text" id="login_email" name="login[email]" required="required" placeholder="e-mail" value="{{ last_username }}">
+                            </div>
+                            <div class="col-md-12">
+                                <input type="password" id="login_password" name="login[password]" required="required">
+                            </div>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            <div class="col-md-6">
+                                <button type="submit" class="site-btn"><span>Prihlásenie</span></button>
+                            </div>
+                            <div class="col-md-6 margin-auto">
+                                <a href="{{ path('auth_register') }}" class="site-btn"><span>Registrácia</span></a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num-holder" id="snh-1"></div>
+        {{ include('pages/partial/contact-link.html.twig') }}
+    </div>
+    <!-- Hero section end -->
+{% endblock %}

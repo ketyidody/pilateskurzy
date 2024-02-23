@@ -1,0 +1,53 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <!-- Hero section -->
+    <div class="section fp-auto-height" id="hero-section">
+        <div class="hero-slider owl-carousel">
+            <div class="hs-item set-bg" data-setbg="{{ asset('img/slider/yoga-2600-2.png') }}">
+                <div class="container text-white">
+                    <h1>Prihlásenie</h1>
+                    {% if form is defined %}
+                        {{ form_start(form, {'attr': {'class': 'contact-form'}}) }}
+                        {{ form_errors(form) }}
+                        {% if (app.session.get('error') or app.session.get('error') != '') %}
+                            <div class="auth-error">
+                                {{ app.session.get('error') }}
+                                {{ app.session.set('error', '') }}
+                            </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ form_widget(form.first_name, {'attr': {'placeholder': 'Meno'}}) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.last_name, {'attr': {'placeholder': 'Priezvisko'}}) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.email, {'attr': {'placeholder': 'e-mail'}}) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.password, {'attr': {'placeholder': 'Heslo'}}) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.password_confirmation, {'attr': {'placeholder': 'Potvrdenie hesla'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="site-btn"><span>Registrácia</span></button>
+                            </div>
+                            <div class="col-md-6 margin-auto">
+                                <a href="{{ path('auth_login') }}" class="site-btn"><span>Prihlásenie</span></a>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="slide-num-holder" id="snh-1"></div>
+        {{ include('pages/partial/contact-link.html.twig') }}
+    </div>
+    <!-- Hero section end -->
+
+{#    <script src="{{ asset('js/login.js') }}"></script>#}
+{% endblock %}
