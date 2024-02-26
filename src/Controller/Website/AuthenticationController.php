@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Website;
 
+use App\Entity\Event;
 use App\Entity\WebUser;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AuthenticationController extends AbstractController
@@ -36,7 +38,37 @@ class AuthenticationController extends AbstractController
 
         return $this->render('auth/login.html.twig', [
             'last_username' => $lastUsername,
-            'error'         => $error,
+            'error' => $error,
+        ]);
+    }
+
+    #[Route('/simple_login', name: 'auth_simple_login')]
+    public function simpleLoginAction(AuthenticationUtils $authenticationUtils): Response
+    {
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('auth/simple-login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+        ]);
+    }
+
+    #[Route('/api/login', name: 'api_login', methods: ['POST'])]
+    public function apiLogin(#[CurrentUser] ?WebUser $user, Security $security): Response
+    {
+        if (null === $user) {
+            return $this->json([
+                'message' => 'missing credentials',
+                ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $token = $security->getToken();
+
+        return $this->json([
+            'user' => $user->getUserIdentifier(),
+            'token' => $token
         ]);
     }
 
@@ -54,6 +86,7 @@ class AuthenticationController extends AbstractController
             $this->entityManager->flush();
 
             $this->addFlash('success', 'Successful registration');
+            $this->redirectToRoute('auth_login');
         }
 
         return $this->render('auth/register.html.twig', [
@@ -72,12 +105,16 @@ class AuthenticationController extends AbstractController
     #[Route('/profile', name: 'auth_profile')]
     public function profileAction(): Response
     {
-        if (!$webUser = $this->getUser()) {
+        /** @var WebUser $webUser */
+        if (! $webUser = $this->getUser()) {
             return $this->redirectToRoute('auth_login');
         }
 
+        $events = $this->entityManager->getRepository(Event::class)
+            ->findByUser($webUser);
+
         return $this->render('auth/profile.html.twig', [
-            'events' => $webUser->getEvents(),
+            'events' => $events,
         ]);
     }
 }

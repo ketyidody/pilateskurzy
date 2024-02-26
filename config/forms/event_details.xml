@@ -36,8 +36,24 @@
 
         <property name="event_type" type="event_type_selection" colspan="6">
             <meta>
-                <title>app.event_Type</title>
+                <title>app.event_type</title>
             </meta>
+        </property>
+
+        <property name="price" type="number" colspan="6">
+            <meta>
+                <title>app.price</title>
+            </meta>
+        </property>
+
+        <property name="description" type="text_editor">
+            <meta>
+                <title>app.description</title>
+            </meta>
+
+            <params>
+                <param name="height" value="400"/>
+            </params>
         </property>
     </properties>
 </form>

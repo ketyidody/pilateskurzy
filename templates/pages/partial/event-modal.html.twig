@@ -1,0 +1,60 @@
+{% extends "simple-base.html.twig" %}
+
+{% block content %}
+    <div class="section fp-auto-height" id="hero-section">
+        <div class="hero-slider owl-carousel">
+            <div class="hs-item set-bg" data-setbg="{{ asset('img/wall.jpg') }}">
+                <div class="container text-white">
+                    <div class="event-modal-container">
+                        <div class="event-modal-header">
+                            <h3>{{ eventName }}</h3>
+                        </div>
+                        <div class="event-modal-body">
+                            <div class="event-modal-description">
+                                {{ eventDescription|raw }}
+                            </div>
+                            <div class="event-modal-date_time">
+                                Dátum/Čas: {{ eventStart }} - {{ eventEnd }}
+                            </div>
+                            <div class="event-modal-allocation">
+                                Kapacita: {{ eventAllocation }} / {{ eventCapacity }}
+                            </div>
+                            <div class="event-modal-price">
+                                Cena: {{ eventPrice }}
+                            </div>
+                        </div>
+                        <div class="event-modal-footer">
+                            {% if alreadyOnEvent %}
+                                <button class="event-modal-confirm" disabled>Už ste prihlásení</button>
+                            {% else %}
+                                <button class="event-modal-confirm">Prihlásiť sa na kurz</button>
+                            {% endif %}
+
+                            <button class="event-modal-cancel">Zrušiť</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function () {
+            $('.event-modal-confirm').on('click', function () {
+                var data = {
+                    'eventId': {{ eventId }},
+                    'userId': {{ app.user.id }}
+                }
+
+                $.ajax({
+                    url: '/api/event/register',
+                    method: 'POST',
+                    data: data,
+                })
+            })
+        })
+    </script>
+{% endblock %}

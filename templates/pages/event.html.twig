@@ -32,24 +32,31 @@
                 headerDateFormat: "dddd (dd/MM/yyyy)",
                 onEventClick: async args => {
 
-                    const form = [
-                        {name: "Email", id: 'email'},
-                    ];
+                    // const form = [
+                    //     {name: "Email", id: 'email'},
+                    // ];
+                    //
+                    // showAllocationOnModal(args.e.data)
+                    // const modal = await DayPilot.Modal.form(form, args.e.data, {
+                    //     okText: 'Register',
+                    // });
+                    //
+                    // if (modal.canceled) {
+                    //     return;
+                    // }
 
-                    showAllocationOnModal(args.e.data)
-                    const modal = await DayPilot.Modal.form(form, args.e.data, {
-                        okText: 'Register',
+                    var modal = new DayPilot.Modal({
+                        onClose: function(args) {
+                            console.log("Modal dialog closed");
+                        }
                     });
+                    modal.showUrl('/api/event/modal/' + args.e.data.id);
 
-                    if (modal.canceled) {
-                        return;
-                    }
-
-                    $.ajax({
-                        url: '/api/event/register',
-                        method: 'POST',
-                        data: modal.result,
-                    })
+                    // $.ajax({
+                    //     url: '/api/event/register',
+                    //     method: 'POST',
+                    //     data: modal.result,
+                    // })
 
                     eventAllocation(args.e.data.id)
 

@@ -66,6 +66,8 @@ class EventController extends AbstractController implements SecuredControllerInt
                 'event_type' => $entity->getEventType()?->__toString(),
                 'capacity' => $entity->getCapacity(),
                 'duration' => $entity->getDuration() . 'h',
+                'description' => $entity->getDescription(),
+                'price' => $entity->getPrice(),
                 'id' => $entity->getId(),
             ];
         }
@@ -132,6 +134,8 @@ class EventController extends AbstractController implements SecuredControllerInt
         $entity->setDuration((int) $data['duration']);
         $entity->setName($data['name']);
         $entity->setEventType($data['event_type']);
+        $entity->setDescription($data['description']);
+        $entity->setPrice($data['price']);
     }
 
     protected function getDataForEntity(Event $entity): array
@@ -144,9 +148,10 @@ class EventController extends AbstractController implements SecuredControllerInt
             'dateTime' => $dateTime ? $dateTime->format('c') : null,
             'duration' => $entity->getDuration(),
             'capacity' => $entity->getCapacity(),
-            //            'attendee' => $entity->getAttendee(),
             'name' => $entity->getName(),
             'event_type' => $entity->getEventType(),
+            'description' => $entity->getDescription(),
+            'price' => $entity->getPrice(),
         ];
     }
 

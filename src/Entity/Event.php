@@ -13,7 +13,7 @@ use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectManagerAware;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: \App\Repository\EventRepository::class)]
 class Event implements ObjectManagerAware
 {
     public const RESOURCE_KEY = 'event';
@@ -28,7 +28,7 @@ class Event implements ObjectManagerAware
     protected \DateTime $dateTime;
 
     #[ORM\Column(type: Types::TEXT)]
-    protected $name;
+    protected string $name;
 
     #[ORM\Column(type: Types::INTEGER)]
     protected int $duration;
@@ -36,11 +36,20 @@ class Event implements ObjectManagerAware
     #[ORM\Column(type: Types::INTEGER)]
     protected int $capacity;
 
+    #[ORM\Column(type: Types::TEXT)]
+    protected string $description;
+
+    #[ORM\Column(type: Types::FLOAT)]
+    protected float $price;
+
     #[ORM\ManyToOne(targetEntity: EventType::class)]
     #[ORM\JoinColumn(name: 'event_type_id', referencedColumnName: 'id')]
     protected ?EventType $eventType;
 
-    #[ORM\ManyToMany(targetEntity: WebUser::class, mappedBy: 'events', fetch: 'EAGER')]
+    #[ORM\JoinTable(name: 'users_events')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'event_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: WebUser::class)]
     protected Collection $users;
 
     protected ?ObjectManager $entityManager = null;
@@ -138,7 +147,6 @@ class Event implements ObjectManagerAware
 
     public function addUser(WebUser $user): void
     {
-        $user->addEvent($this);
         $this->users->add($user);
     }
 
@@ -178,6 +186,26 @@ class Event implements ObjectManagerAware
     public function injectObjectManager(ObjectManager $objectManager, ClassMetadata $classMetadata)
     {
         $this->entityManager = $objectManager;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): void
+    {
+        $this->price = $price;
     }
 
     public function save()

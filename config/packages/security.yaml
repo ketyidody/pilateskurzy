@@ -69,6 +69,10 @@ security:
                 enable_csrf: true
                 username_parameter: "login[email]"
                 password_parameter: "login[password]"
+            json_login:
+                check_path: api_login
+                username_path: email
+                password_path: password
 
 
         #website:

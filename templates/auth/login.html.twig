@@ -18,7 +18,7 @@
                                 <input type="text" id="login_email" name="login[email]" required="required" placeholder="e-mail" value="{{ last_username }}">
                             </div>
                             <div class="col-md-12">
-                                <input type="password" id="login_password" name="login[password]" required="required">
+                                <input type="password" id="login_password" name="login[password]" required="required" placeholder="heslo">
                             </div>
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                             <div class="col-md-6">

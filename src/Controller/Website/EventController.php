@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -28,16 +29,18 @@ class EventController extends AbstractController
     {
         $qb = $this->em->createQueryBuilder();
         $res = $qb->select([
-            't.id',
-            't.dateTime',
-            't.duration',
-            't.capacity',
-            't.name',
+            'e.id',
+            'e.dateTime',
+            'e.duration',
+            'e.capacity',
+            'e.name',
+            'e.description',
+            'e.price',
             'et.name as event_type',
         ])
-            ->from(Event::class, 't')
-            ->join('t.eventType', 'et')
-            ->where($qb->expr()->between('t.dateTime', ':fromDate', ':toDate'))
+            ->from(Event::class, 'e')
+            ->join('e.eventType', 'et')
+            ->where($qb->expr()->between('e.dateTime', ':fromDate', ':toDate'))
             ->setParameters([
                 'fromDate' => '2024-02-04',
                 'toDate' => '2024-02-30',
@@ -48,24 +51,30 @@ class EventController extends AbstractController
 
     public function registerToEvent(Request $request): JsonResponse
     {
-        $eventId = $request->get('id');
-        $email = $request->get('email');
+        $eventId = $request->get('eventId');
+        $webUser = $this->getUser();
 
-        $event = $this->doctrine->getRepository(Event::class)->find($eventId);
-        $webUser = $this->em->getRepository(WebUser::class)
-            ->findOneBy(['email' => $email]);
         if (!$webUser instanceof WebUser) {
             return $this->json([
                 'status' => 'error',
                 'message' => 'Not logged in'
             ]);
         }
+
+        $event = $this->doctrine->getRepository(Event::class)->find($eventId);
+
+        if (!$event instanceof Event) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Event not found'
+            ]);
+        }
+
         $event?->addUser($webUser);
+
         $this->doctrine->getManager()->persist($event);
-        $this->doctrine->getManager()->persist($webUser);
         $this->doctrine->getManager()->flush();
 
-        // return redirect to login
         return $this->json(['status' => 'ok']);
     }
 
@@ -75,6 +84,32 @@ class EventController extends AbstractController
 
         return $this->json([
             'allocation' => $event?->getUsers()->count(),
+        ]);
+    }
+
+    public function getEventModal(Request $request, int $eventId): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('auth_simple_login');
+        }
+        $event = $this->doctrine->getRepository(Event::class)->find($eventId);
+
+        $alreadyOnEvent = false;
+        if ($event->getUsers()->contains($user)) {
+            $alreadyOnEvent = true;
+        }
+
+        return $this->render('pages/partial/event-modal.html.twig', [
+            'eventId' => $eventId,
+            'eventName' => $event->getName(),
+            'eventDescription' => $event->getDescription(),
+            'eventPrice' => $event->getPrice(),
+            'eventAllocation' => $event?->getUsers()->count(),
+            'eventCapacity' => $event->getCapacity(),
+            'eventStart' => $event->getDateTime()->format('Y-m-d H:i:s'),
+            'eventEnd' => $event->getDateTime()->add(new \DateInterval('PT' .   $event->getDuration() . 'H'))->format('Y-m-d H:i:s'),
+            'alreadyOnEvent' => $alreadyOnEvent,
         ]);
     }
 }

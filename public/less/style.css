@@ -114,4 +114,7 @@ input:-webkit-autofill:active {
   width: 20px;
   height: auto;
 }
+button:disabled {
+  color: white;
+}
 /*# sourceMappingURL=style.css.map */

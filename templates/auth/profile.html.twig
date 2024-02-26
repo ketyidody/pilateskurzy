@@ -6,14 +6,8 @@
         <div class="hero-slider owl-carousel">
             <div class="hs-item set-bg" data-setbg="{{ asset('img/slider/yoga-2600-2.png') }}">
                 <div class="container text-white">
-                    <h1>Profil</h1>
-                    <div class="row">
-                        {% for event in events %}
-                            <div class="col-md-12">
-                                {{ event }}
-                            </div>
-                        {% endfor %}
-                    </div>
+                    <h2>Ahoj {{ app.user.firstName }}</h2>
+                    <div id="about-more" class="site-btn"><span>Moje udalosti</span></div>
                 </div>
             </div>
         </div>
@@ -21,4 +15,20 @@
         {{ include('pages/partial/contact-link.html.twig') }}
     </div>
     <!-- Hero section end -->
+    {% if events %}
+        <!-- Testimonial section -->
+        <div id="content" class="section testimonial-section set-bg text-white" data-setbg="{{ asset('img/slider/yoga-2600-1.png') }}">
+            <div class="container">
+                <div class="testimonial-content">
+                    {% for event in events %}
+                        <div class="col-md-12">
+                            {{ event }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Testimonial section end-->
+
+    {% endif %}
 {% endblock %}

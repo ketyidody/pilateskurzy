@@ -26,17 +26,10 @@ class WebUser implements UserInterface, PasswordAuthenticatedUserInterface
     protected string $password;
 
     #[ORM\Column(type: Types::TEXT)]
-    protected string $salt;
-
-    #[ORM\Column(type: Types::TEXT)]
     protected string $firstName;
 
     #[ORM\Column(type: Types::TEXT)]
     protected string $lastName;
-
-    #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'users')]
-    #[ORM\JoinTable(name: 'users_events')]
-    protected Collection $events;
 
     public function __construct(protected UserPasswordHasherInterface $passwordHasher)
     {
@@ -46,33 +39,10 @@ class WebUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\PrePersist]
     public function setSaltAndPassword(): void
     {
-        $this->salt = sha1(random_int(10000, 99999));
         $this->password = $this->passwordHasher->hashPassword(
             $this,
             $this->password
         );
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getEvents()
-    {
-        return $this->events;
-    }
-
-    /**
-     * @param mixed $events
-     */
-    public function setEvents($events): void
-    {
-        $this->events = $events;
-    }
-
-    public function addEvent(Event $event)
-    {
-        $this->events->add($event);
     }
 
     public function getId(): int
@@ -103,16 +73,6 @@ class WebUser implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): void
     {
         $this->password = $password;
-    }
-
-    public function getSalt(): string
-    {
-        return $this->salt;
-    }
-
-    public function setSalt(string $salt): void
-    {
-        $this->salt = $salt;
     }
 
     public function getFirstName(): string
