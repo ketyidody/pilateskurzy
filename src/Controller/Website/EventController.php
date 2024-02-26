@@ -25,8 +25,10 @@ class EventController extends AbstractController
     ) {
     }
 
-    public function getEventsForMonthAction(Request $request): JsonResponse
+    public function getEventsForMonthAction(string $dateString): JsonResponse
     {
+        $start = date('Y-m-d', strtotime('monday 0 week', strtotime($dateString)));
+        $end = date('Y-m-d', strtotime('sunday 0 week', strtotime($dateString)));
         $qb = $this->em->createQueryBuilder();
         $res = $qb->select([
             'e.id',
@@ -42,11 +44,17 @@ class EventController extends AbstractController
             ->join('e.eventType', 'et')
             ->where($qb->expr()->between('e.dateTime', ':fromDate', ':toDate'))
             ->setParameters([
-                'fromDate' => '2024-02-04',
-                'toDate' => '2024-02-30',
+                'fromDate' => $start,
+                'toDate' => $end,
             ]);
 
-        return $this->json($res->getQuery()->execute());
+        $data = [];
+        foreach ($res->getQuery()->execute() as $eventArray) {
+            $event = $this->em->getRepository(Event::class)->find($eventArray['id']);
+            $data[] = array_merge($eventArray, ['allocation' => count($event->getUsers())]);
+        }
+
+        return $this->json($data);
     }
 
     public function registerToEvent(Request $request): JsonResponse
@@ -75,7 +83,10 @@ class EventController extends AbstractController
         $this->doctrine->getManager()->persist($event);
         $this->doctrine->getManager()->flush();
 
-        return $this->json(['status' => 'ok']);
+        return $this->json([
+            'status' => 'ok',
+            'redirectUrl' => $this->redirect('/api/event-response/modal/' . $eventId),
+        ]);
     }
 
     public function getAllocationForEvent(Request $request, $eventId): JsonResponse
@@ -110,6 +121,24 @@ class EventController extends AbstractController
             'eventStart' => $event->getDateTime()->format('Y-m-d H:i:s'),
             'eventEnd' => $event->getDateTime()->add(new \DateInterval('PT' .   $event->getDuration() . 'H'))->format('Y-m-d H:i:s'),
             'alreadyOnEvent' => $alreadyOnEvent,
+        ]);
+    }
+
+    public function eventResponse(Request $request, int $eventId): Response
+    {
+        $event = $this->doctrine->getRepository(Event::class)->find($eventId);
+
+        return $this->render('pages/partial/event-register-response-modal.html.twig', [
+            'eventId' => $eventId,
+            'eventName' => $event->getName(),
+            'eventDescription' => $event->getDescription(),
+            'eventPrice' => $event->getPrice(),
+            'eventAllocation' => $event?->getUsers()->count(),
+            'eventCapacity' => $event->getCapacity(),
+            'eventStart' => $event->getDateTime()->format('Y-m-d H:i:s'),
+            'eventEnd' => $event->getDateTime()->add(new \DateInterval('PT' .   $event->getDuration() . 'H'))->format('Y-m-d H:i:s'),
+            'response' => 'ok',
+            'responseText' => 'Úspešné prihlásenie',
         ]);
     }
 }

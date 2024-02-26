@@ -22,15 +22,18 @@
                             <div class="event-modal-price">
                                 Cena: {{ eventPrice }}
                             </div>
+                            {% if response is same as 'ok' %}
+                                <div class="event-modal-response-ok">
+                                    {{ responseText }}
+                                </div>
+                            {% else %}
+                                <div class="event-modal-response-fail">
+                                    {{ responseText }}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="event-modal-footer">
-                            {% if alreadyOnEvent %}
-                                <button class="site-btn event-modal-confirm-disabled" disabled><span>Už ste prihlásení</span></button>
-                            {% else %}
-                                <button class="site-btn event-modal-confirm"><span>Prihlásiť sa na kurz</span></button>
-                            {% endif %}
-
-                            <button class="site-btn event-modal-cancel"><span>Späť</span></button>
+                            <button class="site-btn event-modal-back"><span>Späť</span></button>
                         </div>
                     </div>
                 </div>
@@ -43,23 +46,7 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function () {
-            $('.event-modal-confirm').on('click', function () {
-                var data = {
-                    'eventId': {{ eventId }},
-                    'userId': {{ app.user.id }}
-                }
-
-                $.ajax({
-                    url: '/api/event/register',
-                    method: 'POST',
-                    data: data,
-                    success: function(data) {
-                        window.location.replace(data.redirectUrl.targetUrl)
-                    }
-                })
-            })
-
-            $('.event-modal-cancel').on('click', function () {
+            $('.event-modal-back').on('click', function () {
                 var modal = DayPilot.Modal.opener();
                 modal.close();
             })

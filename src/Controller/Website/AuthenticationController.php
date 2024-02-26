@@ -68,7 +68,8 @@ class AuthenticationController extends AbstractController
 
         return $this->json([
             'user' => $user->getUserIdentifier(),
-            'token' => $token
+            'token' => $token,
+            'redirectUrl' => $this->redirect('/api/event/modal/6'),
         ]);
     }
 

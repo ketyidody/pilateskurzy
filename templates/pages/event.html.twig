@@ -31,37 +31,11 @@
                 locale: "sk-sk",
                 headerDateFormat: "dddd (dd/MM/yyyy)",
                 onEventClick: async args => {
-
-                    // const form = [
-                    //     {name: "Email", id: 'email'},
-                    // ];
-                    //
-                    // showAllocationOnModal(args.e.data)
-                    // const modal = await DayPilot.Modal.form(form, args.e.data, {
-                    //     okText: 'Register',
-                    // });
-                    //
-                    // if (modal.canceled) {
-                    //     return;
-                    // }
-
                     var modal = new DayPilot.Modal({
                         onClose: function(args) {
-                            console.log("Modal dialog closed");
                         }
                     });
                     modal.showUrl('/api/event/modal/' + args.e.data.id);
-
-                    // $.ajax({
-                    //     url: '/api/event/register',
-                    //     method: 'POST',
-                    //     data: modal.result,
-                    // })
-
-                    eventAllocation(args.e.data.id)
-
-                    dp.events.update(modal.result);
-
                 },
                 onBeforeEventRender: args => {
                     args.data.barBackColor = "transparent";
@@ -93,10 +67,12 @@
                 previous() {
                     const startDate = dp.startDate.addDays(-7);
                     dp.update({startDate: startDate});
+                    initEvents(dp, startDate)
                 },
                 next() {
                     const startDate = dp.startDate.addDays(7);
                     dp.update({startDate: startDate});
+                    initEvents(dp)
                 },
             };
             app.init();
@@ -105,38 +81,31 @@
 
         async function initEvents(dp)
         {
+            currWeek = dp.startDate.toString('yyyy-MM-dd');
+
             $.ajax({
-                url: '/api/events/2024-02-08',
+                url: '/api/events/' + currWeek,
                 method: 'POST',
                 success: function (data) {
                     $.each(data, function () {
+                        var eventId = this.id;
                         var e = new DayPilot.Event({
                             start: new DayPilot.Date(this.dateTime),
                             end: new DayPilot.Date(this.dateTime).addHours(this.duration),
                             id: this.id,
-                            html: '<div class="event-title">' + this.name + '</div><div class="event-allocation-container"><span class="event-allocation" data-event-id="' + this.id + '"></span>/<span class="event-capacity">' + this.capacity + '</span></div>',
+                            html: '<div class="event-title">' + this.name + '</div><div class="event-allocation-container"><span class="event-allocation" data-event-id="' + this.id + '">' + this.allocation + '</span>/<span class="event-capacity">' + this.capacity + '</span></div>',
                             barColor: "#6aa84f",
                             capacity: this.capacity,
                         });
-                        dp.events.add(e);
-                        eventAllocation(this.id);
+                        daypilotEvent = dp.events.find(function (e) {
+                            return e.id() === eventId;
+                        });
+                        if (!daypilotEvent) {
+                            dp.events.add(e);
+                        }
                     });
                 },
             })
         }
-
-        function eventAllocation(eventId) {
-            $.getJSON('/api/event/allocation/'+eventId, function(data) {
-                $('.event-allocation[data-event-id=' + eventId + ']').append(data.allocation);
-            })
-        }
-
-        function showAllocationOnModal(eventData) {
-            $.getJSON('/api/event/allocation/'+eventData.id, function(data) {
-                $('.modal_default_input').append('<div class="event-modal-allocation">');
-                $('.event-modal-allocation').html('Capacity: ' + data.allocation + '/' + eventData.capacity)
-            })
-        }
-
     </script>
 {% endblock %}

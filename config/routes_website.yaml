@@ -4,7 +4,7 @@ controllers:
     type: attribute
 
 app_event_web_api:
-    path: /api/events/{month}
+    path: /api/events/{dateString}
     controller: App\Controller\Website\EventController::getEventsForMonthAction
 app_event_register_web_api:
     path: /api/event/register
@@ -15,6 +15,9 @@ app_event_users_count_web_api:
 app_event_modal_web_api:
     path: /api/event/modal/{eventId}
     controller: App\Controller\Website\EventController::getEventModal
+app_event_response_modal_web_api:
+    path: /api/event-response/modal/{eventId}
+    controller: App\Controller\Website\EventController::eventResponse
 
 
 logout:

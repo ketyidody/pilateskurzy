@@ -115,6 +115,32 @@ input:-webkit-autofill:active {
   height: auto;
 }
 button:disabled {
-  color: white;
+  color: rgba(255, 255, 255, 0.5);
+}
+.site-btn:disabled {
+  cursor: default;
+}
+.site-btn:disabled:before,
+.site-btn:disabled:after {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.site-btn:disabled span {
+  color: rgba(255, 255, 255, 0.5);
+}
+.site-btn:disabled span:before,
+.site-btn:disabled span:after {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.max-width {
+  width: 100%;
+}
+.half-width {
+  width: 50%;
+}
+.event-modal-response-ok {
+  color: green;
+}
+.event-modal-response-fail {
+  color: red;
 }
 /*# sourceMappingURL=style.css.map */

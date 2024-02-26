@@ -5,28 +5,47 @@
         <div class="hero-slider owl-carousel">
             <div class="hs-item set-bg" data-setbg="{{ asset('img/wall.jpg') }}">
                 <div class="container text-white">
-                    <h1>Prihlásenie</h1>
-                    <form class="contact-form" action="{{ path('api_login') }}" id="api-login-form" method="post">
-                        {% if error %}
-                            <div class="auth-error">
-                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                    <div class="event-modal-container">
+                        <form class="contact-form max-width" action="{{ path('api_login') }}" id="api-login-form"
+                              method="post">
+                            <div class="event-modal-header">
+                                <h3>Prihlásenie</h3>
                             </div>
-                        {% endif %}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <input type="text" id="api-login-email" name="login[email]" required="required"
-                                       placeholder="e-mail" value="{{ last_username }}">
+                            <div class="event-modal-body">
+                                {% if error %}
+                                    <div class="auth-error">
+                                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                                    </div>
+                                {% endif %}
+                                <div class="col-xs-12 col-sm-6 offset-3">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="text" id="api-login-email" name="login[email]"
+                                                   required="required"
+                                                   placeholder="e-mail" value="{{ last_username }}">
+                                        </div>
+                                        <div class="row">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="password" id="api-login-password" name="login[password]"
+                                                   required="required"
+                                                   placeholder="heslo">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-12">
-                                <input type="password" id="api-login-password" name="login[password]" required="required"
-                                       placeholder="heslo">
+                            <div class="event-modal-footer">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <button type="submit" class="site-btn"><span>Prihlásenie</span></button>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <button class="site-btn event-modal-cancel"><span>Späť</span></button>
+                                    </div>
+                                </div>
                             </div>
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                            <div class="col-md-6">
-                                <button type="submit" class="site-btn"><span>Prihlásenie</span></button>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,8 +55,8 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        $(function() {
-            $('#api-login-form').on('submit', function(e) {
+        $(function () {
+            $('#api-login-form').on('submit', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -50,21 +69,11 @@
                     url: "{{ path('api_login') }}",
                     data: JSON.stringify(credentials),
                     contentType: "application/json; charset=utf-8",
-                    success: function() {
-                        replaceLogin();
+                    success: function (data) {
+                        window.location.replace(data.redirectUrl.targetUrl);
                     }
                 })
             })
         })
-
-        function replaceLogin() {
-            $.ajax({
-                url: "/api/event/modal/6",
-                success: function(data) {
-                    console.log(data);
-                    $('.api-login-section').html(data);
-                }
-            })
-        }
     </script>
 {% endblock %}
