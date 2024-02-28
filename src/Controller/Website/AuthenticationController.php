@@ -114,8 +114,18 @@ class AuthenticationController extends AbstractController
         $events = $this->entityManager->getRepository(Event::class)
             ->findByUser($webUser);
 
+        usort($events, fn (Event $a, Event $b) => $a->getDateTime() > $b->getDateTime());
+        $now = new \DateTime();
+        $pastEvents = array_filter($events, function(Event $event) use ($now) {
+            return $event->getDateTime() < $now;
+        });
+        $futureEvents = array_filter($events, function(Event $event) use ($now) {
+            return $event->getDateTime() > $now;
+        });
+
         return $this->render('auth/profile.html.twig', [
-            'events' => $events,
+            'pastEvents' => $pastEvents,
+            'futureEvents' => $futureEvents,
         ]);
     }
 }

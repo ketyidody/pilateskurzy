@@ -24,7 +24,7 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function () {
-            const dp = new DayPilot.Calendar("event-calendar", {
+            const eventCalendar = new DayPilot.Calendar("event-calendar", {
                 theme: "calendar_green",
                 viewType: "Week",
                 startDate: DayPilot.Date.today(),
@@ -33,6 +33,7 @@
                 onEventClick: async args => {
                     var modal = new DayPilot.Modal({
                         onClose: function(args) {
+                            initEvents(eventCalendar)
                         }
                     });
                     modal.showUrl('/api/event/modal/' + args.e.data.id);
@@ -44,7 +45,7 @@
                     }
                 },
             });
-            dp.init();
+            eventCalendar.init();
 
             const app = {
                 elements: {
@@ -65,23 +66,23 @@
                     });
                 },
                 previous() {
-                    const startDate = dp.startDate.addDays(-7);
-                    dp.update({startDate: startDate});
-                    initEvents(dp, startDate)
+                    const startDate = eventCalendar.startDate.addDays(-7);
+                    eventCalendar.update({startDate: startDate});
+                    initEvents(eventCalendar, startDate)
                 },
                 next() {
-                    const startDate = dp.startDate.addDays(7);
-                    dp.update({startDate: startDate});
-                    initEvents(dp)
+                    const startDate = eventCalendar.startDate.addDays(7);
+                    eventCalendar.update({startDate: startDate});
+                    initEvents(eventCalendar)
                 },
             };
             app.init();
-            initEvents(dp);
+            initEvents(eventCalendar);
         })
 
-        async function initEvents(dp)
+        async function initEvents(eventCalendar)
         {
-            currWeek = dp.startDate.toString('yyyy-MM-dd');
+            currWeek = eventCalendar.startDate.toString('yyyy-MM-dd');
 
             $.ajax({
                 url: '/api/events/' + currWeek,
@@ -89,19 +90,23 @@
                 success: function (data) {
                     $.each(data, function () {
                         var eventId = this.id;
-                        var e = new DayPilot.Event({
+                        var eventData = {
                             start: new DayPilot.Date(this.dateTime),
                             end: new DayPilot.Date(this.dateTime).addHours(this.duration),
                             id: this.id,
                             html: '<div class="event-title">' + this.name + '</div><div class="event-allocation-container"><span class="event-allocation" data-event-id="' + this.id + '">' + this.allocation + '</span>/<span class="event-capacity">' + this.capacity + '</span></div>',
                             barColor: "#6aa84f",
                             capacity: this.capacity,
-                        });
-                        daypilotEvent = dp.events.find(function (e) {
+                        };
+                        var e = new DayPilot.Event(eventData);
+                        daypilotEvent = eventCalendar.events.find(function (e) {
                             return e.id() === eventId;
                         });
                         if (!daypilotEvent) {
-                            dp.events.add(e);
+                            eventCalendar.events.add(e);
+                        } else {
+                            daypilotEvent.data.html = eventData.html;
+                            eventCalendar.events.update(daypilotEvent);
                         }
                     });
                 },

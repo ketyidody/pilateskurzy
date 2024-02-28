@@ -143,4 +143,17 @@ button:disabled {
 .event-modal-response-fail {
   color: red;
 }
+.calendar_green_corner_inner {
+  height: 60px !important;
+}
+.calendar_green_corner {
+  height: 60px !important;
+}
+.calendar_green_colheader {
+  white-space: normal !important;
+  height: 60px !important;
+}
+.calendar_green_cornerright {
+  height: 60px !important;
+}
 /*# sourceMappingURL=style.css.map */

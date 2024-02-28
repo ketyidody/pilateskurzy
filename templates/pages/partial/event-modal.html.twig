@@ -1,7 +1,7 @@
 {% extends "simple-base.html.twig" %}
 
 {% block content %}
-    <div class="section fp-auto-height" id="hero-section">
+    <div class="section fp-auto-height" id="modal-hero-section">
         <div class="hero-slider owl-carousel">
             <div class="hs-item set-bg" data-setbg="{{ asset('img/wall.jpg') }}">
                 <div class="container text-white">
@@ -26,6 +26,8 @@
                         <div class="event-modal-footer">
                             {% if alreadyOnEvent %}
                                 <button class="site-btn event-modal-confirm-disabled" disabled><span>Už ste prihlásení</span></button>
+                            {% elseif eventIsFull %}
+                                <button class="site-btn event-modal-confirm-disabled" disabled><span>Kurz je už plný</span></button>
                             {% else %}
                                 <button class="site-btn event-modal-confirm"><span>Prihlásiť sa na kurz</span></button>
                             {% endif %}
@@ -44,8 +46,9 @@
     <script type="text/javascript">
         $(function () {
             $('.event-modal-confirm').on('click', function () {
+                var eventId = {{ eventId }};
                 var data = {
-                    'eventId': {{ eventId }},
+                    'eventId': eventId,
                     'userId': {{ app.user.id }}
                 }
 
@@ -55,6 +58,9 @@
                     data: data,
                     success: function(data) {
                         window.location.replace(data.redirectUrl.targetUrl)
+                    },
+                    error: function(data) {
+                        window.alert(data.message);
                     }
                 })
             })

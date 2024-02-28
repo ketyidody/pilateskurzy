@@ -16,7 +16,7 @@
             </params>
         </property>
 
-        <property name="dateTime" type="date" colspan="6">
+        <property name="dateTime" type="datetime" colspan="6">
             <meta>
                 <title>app.date_time</title>
             </meta>

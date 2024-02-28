@@ -15,20 +15,21 @@
         {{ include('pages/partial/contact-link.html.twig') }}
     </div>
     <!-- Hero section end -->
-    {% if events %}
-        <!-- Testimonial section -->
-        <div id="content" class="section testimonial-section set-bg text-white" data-setbg="{{ asset('img/slider/yoga-2600-1.png') }}">
-            <div class="container">
-                <div class="testimonial-content">
-                    {% for event in events %}
-                        <div class="col-md-12">
-                            {{ event }}
-                        </div>
-                    {% endfor %}
-                </div>
+    <!-- Testimonial section -->
+    <div id="content" class="section testimonial-section set-bg text-white" data-setbg="{{ asset('img/slider/yoga-2600-1.png') }}">
+        <div class="container">
+            <div class="testimonial-content">
+                past events:
+                {% for event in pastEvents %}
+                    {{ include('pages/partial/event-row.html.twig', {'event': event}) }}
+                {% endfor %}
+                future events:
+                {% for event in futureEvents %}
+                    {{ include('pages/partial/event-row.html.twig', {'event': event}) }}
+                {% endfor %}
             </div>
         </div>
-        <!-- Testimonial section end-->
+    </div>
+    <!-- Testimonial section end-->
 
-    {% endif %}
 {% endblock %}

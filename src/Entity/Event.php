@@ -47,8 +47,8 @@ class Event implements ObjectManagerAware
     protected ?EventType $eventType;
 
     #[ORM\JoinTable(name: 'users_events')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'event_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'user_id', referencedColumnName: 'id')]
     #[ORM\ManyToMany(targetEntity: WebUser::class)]
     protected Collection $users;
 

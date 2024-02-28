@@ -27,7 +27,13 @@ class EventController extends AbstractController
 
     public function getEventsForMonthAction(string $dateString): JsonResponse
     {
-        $start = date('Y-m-d', strtotime('monday 0 week', strtotime($dateString)));
+        // if it is monday, get this monday, if it is any other day, get the previous monday
+        if (date('j', (new \DateTime($dateString))->getTimestamp()) === '1') {
+            $start = date('Y-m-d', strtotime('monday 0 week', strtotime($dateString)));
+        } else {
+            $start = date('Y-m-d', strtotime('monday -1 week', strtotime($dateString)));
+        }
+
         $end = date('Y-m-d', strtotime('sunday 0 week', strtotime($dateString)));
         $qb = $this->em->createQueryBuilder();
         $res = $qb->select([
@@ -54,7 +60,7 @@ class EventController extends AbstractController
             $data[] = array_merge($eventArray, ['allocation' => count($event->getUsers())]);
         }
 
-        return $this->json($data);
+        return $this->json($data, Response::HTTP_OK);
     }
 
     public function registerToEvent(Request $request): JsonResponse
@@ -66,7 +72,7 @@ class EventController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'message' => 'Not logged in'
-            ]);
+            ], Response::HTTP_UNAUTHORIZED);
         }
 
         $event = $this->doctrine->getRepository(Event::class)->find($eventId);
@@ -75,10 +81,24 @@ class EventController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'message' => 'Event not found'
-            ]);
+            ], Response::HTTP_FORBIDDEN);
         }
 
-        $event?->addUser($webUser);
+        if ($event->getCapacity() <= $event->getUsers()->count()) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Event is full'
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        $event->addUser($webUser);
+
+        if (!$event->getUsers()->contains($webUser)) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'User not registered'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         $this->doctrine->getManager()->persist($event);
         $this->doctrine->getManager()->flush();
@@ -86,7 +106,7 @@ class EventController extends AbstractController
         return $this->json([
             'status' => 'ok',
             'redirectUrl' => $this->redirect('/api/event-response/modal/' . $eventId),
-        ]);
+        ], Response::HTTP_OK);
     }
 
     public function getAllocationForEvent(Request $request, $eventId): JsonResponse
@@ -95,7 +115,7 @@ class EventController extends AbstractController
 
         return $this->json([
             'allocation' => $event?->getUsers()->count(),
-        ]);
+        ], Response::HTTP_OK);
     }
 
     public function getEventModal(Request $request, int $eventId): Response
@@ -111,6 +131,8 @@ class EventController extends AbstractController
             $alreadyOnEvent = true;
         }
 
+        $eventIsFull = $event->getCapacity() <= $event->getUsers()->count();
+
         return $this->render('pages/partial/event-modal.html.twig', [
             'eventId' => $eventId,
             'eventName' => $event->getName(),
@@ -121,6 +143,7 @@ class EventController extends AbstractController
             'eventStart' => $event->getDateTime()->format('Y-m-d H:i:s'),
             'eventEnd' => $event->getDateTime()->add(new \DateInterval('PT' .   $event->getDuration() . 'H'))->format('Y-m-d H:i:s'),
             'alreadyOnEvent' => $alreadyOnEvent,
+            'eventIsFull' => $eventIsFull,
         ]);
     }
 
