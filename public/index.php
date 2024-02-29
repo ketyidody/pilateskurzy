@@ -52,6 +52,9 @@ if (\preg_match('/^\/admin(\/|$)/', $_SERVER['REQUEST_URI'])) {
 }
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG'], $suluContext);
+$kernel->boot();
+$container = $kernel->getContainer();
+\App\Facade::init($container);
 
 // Comment this line if you want to use the "varnish" http
 // caching strategy. See http://sulu.readthedocs.org/en/latest/cookbook/caching-with-varnish.html

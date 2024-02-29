@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use App\Facade;
+use App\Service\AuthMailerService;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -31,18 +32,39 @@ class WebUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::TEXT)]
     protected string $lastName;
 
-    public function __construct(protected UserPasswordHasherInterface $passwordHasher)
-    {
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    protected \DateTime $passwordResetRequested;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    protected string $passwordResetHash;
+
+    public function __construct() {
         $this->events = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
+    #[ORM\PreUpdate]
     public function setSaltAndPassword(): void
     {
-        $this->password = $this->passwordHasher->hashPassword(
+        /** @var UserPasswordHasher $passwordHasher */
+        $passwordHasher = Facade::create(UserPasswordHasher::class);
+
+        $this->password = $passwordHasher->hashPassword(
             $this,
             $this->password
         );
+    }
+
+    public function generateAndSendPasswordResetLink()
+    {
+        /** @var AuthMailerService $authMailerService */
+        $authMailerService = Facade::create(AuthMailerService::class);
+        $hash = md5(random_bytes(10));
+
+        $this->passwordResetRequested = new \DateTime();
+        $this->passwordResetHash = $hash;
+
+        $authMailerService->sendPasswordResetEmail($this);
     }
 
     public function getId(): int
@@ -108,5 +130,25 @@ class WebUser implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
+    }
+
+    public function getPasswordResetRequested(): \DateTime
+    {
+        return $this->passwordResetRequested;
+    }
+
+    public function setPasswordResetRequested(\DateTime $passwordResetRequested): void
+    {
+        $this->passwordResetRequested = $passwordResetRequested;
+    }
+
+    public function getPasswordResetHash(): string
+    {
+        return $this->passwordResetHash;
+    }
+
+    public function setPasswordResetHash(string $passwordResetHash): void
+    {
+        $this->passwordResetHash = $passwordResetHash;
     }
 }

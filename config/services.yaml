@@ -26,6 +26,20 @@ services:
             - '../src/Entity/'
             - '../src/Form/'
             - '../src/Kernel.php'
+            - '../src/Services/'
+
+    App\Service\AuthMailerService:
+        public: true
+        arguments:
+            - '@mailer'
+            - '@twig'
+            - '@router.default'
+
+    Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher:
+        public: true
+        arguments:
+            - '@security.password_hasher_factory'
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
