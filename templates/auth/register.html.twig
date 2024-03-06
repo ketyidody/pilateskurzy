@@ -10,12 +10,11 @@
                     {% if form is defined %}
                         {{ form_start(form, {'attr': {'class': 'contact-form'}}) }}
                         {{ form_errors(form) }}
-                        {% if (app.session.get('error') or app.session.get('error') != '') %}
-                            <div class="auth-error">
-                                {{ app.session.get('error') }}
-                                {{ app.session.set('error', '') }}
-                            </div>
-                        {% endif %}
+                        <div class="auth-error">
+                            {% for flashMessage in app.session.flashbag.get('error') %}
+                                {{ flashMessage }}
+                            {% endfor %}
+                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 {{ form_widget(form.first_name, {'attr': {'placeholder': 'Meno'}}) }}

@@ -138,6 +138,9 @@ input:-webkit-autofill:active {
 .auth-error {
   color: orangered;
 }
+.auth-success {
+  color: green;
+}
 
 #auth_actions {
   img {
@@ -207,5 +210,39 @@ button:disabled {
 
   &-error {
     color: red;
+  }
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  background-color: rgba(0,0,0,0);
+}
+.nav-tabs .nav-link {
+  background-color: rgba(0,0,0,0);
+}
+
+.nav-tabs {
+  border-bottom: none;
+
+  .nav-link {
+    border: none;
+
+    &:focus:hover {
+      border-color: unset;
+    }
+  }
+
+  a {
+    border: none;
+    transition: transform 0.2s ease-out;
+
+    &:hover {
+      transform: scale(1.05);
+      transition: transform 0.2s ease-in;
+    }
+  }
+
+  a.active {
+    border: none;
+    border-bottom: 1px solid transparent;
   }
 }

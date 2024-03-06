@@ -1,0 +1,61 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <!-- Hero section -->
+    <div class="section fp-auto-height" id="hero-section">
+        <div class="hero-slider owl-carousel">
+            <div class="hs-item set-bg" data-setbg="{{ asset('img/slider/yoga-2600-2.png') }}">
+                <div class="container text-white">
+                    <h1>Moje udalosti</h1>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a href="#past-events" class="nav-link" id="nav-past-events-tab" data-bs-toggle="tab" role="tab" aria-controls="past-events" aria-selected="false">
+                                        Minulé udalosti
+                                    </a>
+                                    <a href="#future-events" class="nav-link active" id="nav-future-events-tab" data-bs-toggle="tab" role="tab" aria-controls="future-events" aria-selected="true">
+                                        Budúcé udalosti
+                                    </a>
+                                </div>
+                            </nav>
+                            <div class="tab-content" id="my-events-tab-content">
+                                <div class="tab-pane fade" id="past-events" role="tabpanel" aria-labelledby="nav-past-events-tab">
+                                    {% if pastEvents is empty %}
+                                        Nemáte žiadné minulé udalosti
+                                    {% else %}
+                                        {% for event in pastEvents %}
+                                            {{ include('pages/partial/event-row.html.twig', {'event': event}) }}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="tab-pane fade show active" id="future-events" role="tabpanel" aria-labelledby="nav-future-events-tab">
+                                    {% if futureEvents is empty %}
+                                        Nemáte žiadné budúcé udalosti
+                                    {% else %}
+                                        {% for event in futureEvents %}
+                                            {{ include('pages/partial/event-row.html.twig', {'event': event}) }}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-num-holder" id="snh-1"></div>
+        {{ include('pages/partial/contact-link.html.twig') }}
+    </div>
+    <!-- Hero section end -->
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('#nav-tab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    </script>
+{% endblock %}

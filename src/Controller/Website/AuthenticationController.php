@@ -6,6 +6,7 @@ namespace App\Controller\Website;
 
 use App\Entity\Event;
 use App\Entity\WebUser;
+use App\Form\ProfileType;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -84,7 +85,7 @@ class AuthenticationController extends AbstractController
             $this->entityManager->persist($webUser);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Successful registration');
+            $this->addFlash('success', 'Úspešná registrácia');
             $this->redirectToRoute('auth_login');
         }
 
@@ -102,7 +103,45 @@ class AuthenticationController extends AbstractController
     }
 
     #[Route('/profile', name: 'auth_profile')]
-    public function profileAction(): Response
+    public function profileAction(Request $request): Response
+    {
+        /** @var WebUser $webUser */
+        $webUser = $this->getUser();
+        if (!$webUser) {
+            $this->redirect('auth_login');
+        }
+        $form = $this->createForm(ProfileType::class, $webUser);
+
+        if ($request->isMethod('POST')) {
+            $data = $request->request->all();
+            $webUser->setFirstName($data['profile']['first_name']);
+            $webUser->setLastName($data['profile']['last_name']);
+            $webUser->setEmail($data['profile']['email']);
+            if (!empty($data['profile']['password'])) {
+                if ($data['profile']['password'] !== $data['profile']['password_confirmation']) {
+                    $this->addFlash('error', 'Heslá sa nezhodujú');
+                    return $this->render('auth/profile.html.twig', [
+                        'form' => $form,
+                    ]);
+                }
+                $this->addFlash('success', 'Vaše heslo bolo upravené');
+                $webUser->setPassword($data['profile']['password']);
+            }
+
+            $this->entityManager->persist($webUser);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Váš profil bol upravený');
+            $form = $this->createForm(ProfileType::class, $webUser);
+        }
+
+        return $this->render('auth/profile.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/events', name: 'auth_events')]
+    public function eventsAction(): Response
     {
         /** @var WebUser $webUser */
         if (! $webUser = $this->getUser()) {
@@ -121,7 +160,7 @@ class AuthenticationController extends AbstractController
             return $event->getDateTime() > $now;
         });
 
-        return $this->render('auth/profile.html.twig', [
+        return $this->render('auth/events.html.twig', [
             'pastEvents' => $pastEvents,
             'futureEvents' => $futureEvents,
         ]);

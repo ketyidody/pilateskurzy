@@ -6,8 +6,42 @@
         <div class="hero-slider owl-carousel">
             <div class="hs-item set-bg" data-setbg="{{ asset('img/slider/yoga-2600-2.png') }}">
                 <div class="container text-white">
-                    <h2>Ahoj {{ app.user.firstName }}</h2>
-                    <div id="about-more" class="site-btn"><span>Moje udalosti</span></div>
+                    <h1>Moje údaje</h1>
+                    {% if form is defined %}
+                        {{ form_start(form, {'attr': {'class': 'contact-form'}}) }}
+                        {{ form_errors(form) }}
+                        <div class="auth-error">
+                            {% for flashMessage in app.session.flashbag.get('error') %}
+                                {{ flashMessage }}
+                            {% endfor %}
+                        </div>
+                        <div class="auth-success">
+                            {% for flashMessage in app.session.flashbag.get('success') %}
+                                {{ flashMessage }}
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ form_widget(form.first_name, {'attr': {'placeholder': 'Meno'}}) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.last_name, {'attr': {'placeholder': 'Priezvisko'}}) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.email, {'attr': {'placeholder': 'e-mail'}}) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.password, {'attr': {'placeholder': 'Heslo'}}) }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form_widget(form.password_confirmation, {'attr': {'placeholder': 'Potvrdenie hesla'}}) }}
+                            </div>
+                            <div class="col-md-12">
+                                <button type="submit" class="site-btn"><span>Zmeniť</span></button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -15,21 +49,6 @@
         {{ include('pages/partial/contact-link.html.twig') }}
     </div>
     <!-- Hero section end -->
-    <!-- Testimonial section -->
-    <div id="content" class="section testimonial-section set-bg text-white" data-setbg="{{ asset('img/slider/yoga-2600-1.png') }}">
-        <div class="container">
-            <div class="testimonial-content">
-                past events:
-                {% for event in pastEvents %}
-                    {{ include('pages/partial/event-row.html.twig', {'event': event}) }}
-                {% endfor %}
-                future events:
-                {% for event in futureEvents %}
-                    {{ include('pages/partial/event-row.html.twig', {'event': event}) }}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-    <!-- Testimonial section end-->
 
+    {#    <script src="{{ asset('js/login.js') }}"></script> #}
 {% endblock %}
