@@ -196,4 +196,7 @@ button:disabled {
   border: none;
   border-bottom: 1px solid transparent;
 }
+.profile-events-header-container {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
 /*# sourceMappingURL=style.css.map */

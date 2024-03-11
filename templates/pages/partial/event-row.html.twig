@@ -1,6 +1,14 @@
-<div class="event-row">
-    {{ event.name }}
-    {{ event.dateTime.format('Y-m-d H:i:s') }}
-    {{ event.price }}
-    {{ event.duration }}
+<div class="event-row row">
+    <div class="col-sm-12 col-md-3">
+        {{ event.name }}
+    </div>
+    <div class="col-sm-12 col-md-3">
+        {{ event.dateTime.format('Y-m-d H:i:s') }}
+    </div>
+    <div class="col-sm-12 col-md-3">
+        {{ event.price }}
+    </div>
+    <div class="col-sm-12 col-md-3">
+        {{ event.duration }}
+    </div>
 </div>
