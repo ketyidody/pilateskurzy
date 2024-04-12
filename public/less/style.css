@@ -199,4 +199,35 @@ button:disabled {
 .profile-events-header-container {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
+.table {
+  color: #fff;
+}
+.mobile-menu {
+  display: none;
+  background: #fff;
+  width: calc(100% - 30px);
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 15px;
+  padding-right: 0;
+  -webkit-box-shadow: 0px 14px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: 0px 14px 40px rgba(0, 0, 0, 0.35);
+}
+.mobile-menu .card-header button {
+  color: #0b0b0b;
+}
+.mobile-menu .card-body {
+  display: flex;
+  flex-direction: column;
+}
+.mobile-menu .card-body a {
+  text-align: left;
+  color: #0b0b0b;
+}
+.mobile-menu .card-body a:hover {
+  color: inherit;
+}
+.no-margin {
+  margin: 0 !important;
+}
 /*# sourceMappingURL=style.css.map */

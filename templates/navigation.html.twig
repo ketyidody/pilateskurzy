@@ -5,23 +5,16 @@
             <a href="{{ sulu_content_root_path() }}" class="site-logo">
                 <div class="site-btn"><span>Pilateskurzy</span></div>
             </a>
-            <div class="header-social">
-{#                <a href=""><i class="fa fa-pinterest"></i></a>#}
-{#                <a href=""><i class="fa fa-facebook"></i></a>#}
-{#                <a href=""><i class="fa fa-twitter"></i></a>#}
-{#                <a href=""><i class="fa fa-dribbble"></i></a>#}
-{#                <a href=""><i class="fa fa-behance"></i></a>#}
-            </div>
             <div class="nav-switch">
                 <i class="fa fa-bars"></i>
             </div>
             <!-- menu -->
-            <div class="navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-collapse d-none d-sm-block" id="navbarSupportedContent">
                 <ul class="main-menu navbar-nav nav-items-center ml-auto mr-auto">
                     {% for item in sulu_navigation_root_tree('main') %}
                         {% if (sulu_navigation_tree(item['uuid']) is empty) %}
                             <li class="nav-item">
-                                <a href="{{ sulu_content_path(item.url, item.webspaceKey) }}">
+                                <a href="{{ sulu_content_path(item.url, item.webspaceKey) }}" class="no-margin">
                                     {{ item.title }}
                                 </a>
                             </li>
@@ -70,6 +63,31 @@
                         </div>
                     </li>
                 </ul>
+            </div>
+
+            {# mobile menu #}
+            <div class="accordion mobile-menu" id="mobile-menu">
+                {% for item in sulu_navigation_root_tree('main') %}
+                    <div class="card" id="card-{{ item.uuid }}">
+                        <div class="card-header" id="heading-{{ item.uuid }}">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#{{ item.uuid }}" aria-controls="{{ item.uuid }}">
+                                    {{ item.title }}
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="{{ item.uuid }}" class="collapse" aria-labelledby="heading-{{ item.uuid }}" data-parent="#mobile-menu">
+                            <div class="card-body">
+                                {% for subItem in sulu_navigation_tree(item['uuid']) %}
+                                    <a class="black" href="{{ sulu_content_path(subItem.url, subItem.webspaceKey) }}">
+                                        {{ subItem.title }}
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </nav>
     {% endblock %}

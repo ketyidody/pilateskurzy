@@ -52,7 +52,7 @@ $(window).on('load', function() {
 		Navigation
 	--------------------*/
 	$('.nav-switch').on('click', function () {
-		$('.main-menu').slideToggle();
+		$('.mobile-menu').slideToggle();
 	});
 
 
@@ -61,7 +61,7 @@ $(window).on('load', function() {
 	--------------------*/
 	$('.set-bg').each(function() {
 		var bg = $(this).data('setbg');
-		$(this).css('background', 'linear-gradient( rgba(119, 53, 168, 0.5), rgba(0, 0, 0, 1) ), url(' + bg + ')');
+		$(this).css('background', 'linear-gradient( rgba(119, 53, 168, 0.5), rgba(0, 0, 0, 0.7) ), url(' + bg + ')');
 		$(this).css('-webkit-background-size', 'cover');
 		$(this).css('-moz-background-size', 'cover');
 		$(this).css('-o-background-size', 'cover');
