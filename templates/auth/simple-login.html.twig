@@ -1,9 +1,9 @@
 {% extends "simple-base.html.twig" %}
 
 {% block content %}
-    <div class="section fp-auto-height api-login-section" id="hero-section">
+    <div class="section fp-auto-height api-login-section">
         <div class="hero-slider owl-carousel">
-            <div class="hs-item set-bg" data-setbg="{{ asset('img/wall.jpg') }}">
+            <div class="hs-item set-bg padding-top-30" data-setbg="{{ asset('img/wall.jpg') }}">
                 <div class="container text-white">
                     <div class="event-modal-container">
                         <form class="contact-form max-width" action="{{ path('api_login') }}" id="api-login-form"

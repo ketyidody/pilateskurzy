@@ -4,8 +4,8 @@ controllers:
     type: attribute
 
 app_event_web_api:
-    path: /api/events/{dateString}
-    controller: App\Controller\Website\EventController::getEventsForMonthAction
+    path: /api/events/{limit}/{offset}
+    controller: App\Controller\Website\EventController::getFutureEvents
 app_event_register_web_api:
     path: /api/event/register
     controller: App\Controller\Website\EventController::registerToEvent

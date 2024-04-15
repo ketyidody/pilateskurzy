@@ -1,14 +1,28 @@
-<div class="event-row row">
-    <div class="col-sm-12 col-md-3">
-        {{ event.name }}
-    </div>
-    <div class="col-sm-12 col-md-3">
-        {{ event.dateTime.format('Y-m-d H:i:s') }}
-    </div>
-    <div class="col-sm-12 col-md-3">
-        {{ event.price }}
-    </div>
-    <div class="col-sm-12 col-md-3">
-        {{ event.duration }}
+<div class="event-row no-margin js-event-row col-xs-12 col-md-6" data-event-id="{{ event.id }}">
+    <div class="event-rows-container">
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="title">Názov:</span>
+                <span class="value">{{ event.name }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="title">Dátum:</span>
+                <span class="value">{{ event.dateTime.format('Y-m-d H:i:s') }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="title">Cena:</span>
+                <span class="value">{{ event.price }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="title">Trvanie:</span>
+                <span class="value">{{ event.duration }}</span>
+            </div>
+        </div>
     </div>
 </div>

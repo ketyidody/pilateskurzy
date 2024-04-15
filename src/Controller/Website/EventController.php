@@ -62,6 +62,38 @@ class EventController extends AbstractController
 
         return $this->json($data, Response::HTTP_OK);
     }
+    
+    public function getFutureEvents(int $limit, int $offset): JsonResponse
+    {
+        $qb = $this->em->createQueryBuilder();
+        $res = $qb->select([
+            'e.id',
+            'e.dateTime',
+            'e.duration',
+            'e.capacity',
+            'e.name',
+            'e.description',
+            'e.price',
+            'et.name as event_type',
+        ])
+            ->from(Event::class, 'e')
+            ->join('e.eventType', 'et')
+            ->where($qb->expr()->gt('e.dateTime', ':fromDate'))
+            ->setParameters([
+                'fromDate' => (new \DateTime())->format('Y-m-d'),
+            ])
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+        ;
+
+        $data = [];
+        foreach ($res->getQuery()->execute() as $eventArray) {
+            $event = $this->em->getRepository(Event::class)->find($eventArray['id']);
+            $data[] = $this->renderView('pages/partial/event-row.html.twig', ['event' => $event]);
+        }
+
+        return $this->json($data, Response::HTTP_OK);
+    }
 
     public function registerToEvent(Request $request): JsonResponse
     {

@@ -7,11 +7,7 @@
             <div class="sp-container">
                 <div class="hero-content-eighty text-white">
                     <h2>{{ content.title }}</h2>
-                    <div class="event-calendar-navigation">
-                        <a href="#" id="previous" class="event-calendar-navigation-item">Predchádzajúci týžden</a>
-                        <a href="#" id="next" class="event-calendar-navigation-item">Nasledujúci týžden</a>
-                    </div>
-                    <div id="event-calendar" class="js-calendar-container"></div>
+                    <div id="event-calendar" class="row js-calendar-container"></div>
                 </div>
             </div>
         </div>
@@ -24,29 +20,7 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function () {
-            const eventCalendar = new DayPilot.Calendar("event-calendar", {
-                theme: "calendar_green",
-                viewType: "Week",
-                startDate: DayPilot.Date.today(),
-                locale: "sk-sk",
-                headerDateFormat: "dddd (dd/MM/yyyy)",
-                onEventClick: async args => {
-                    var modal = new DayPilot.Modal({
-                        onClose: function(args) {
-                            initEvents(eventCalendar)
-                        }
-                    });
-                    modal.showUrl('/api/event/modal/' + args.e.data.id);
-                },
-                onBeforeEventRender: args => {
-                    args.data.barBackColor = "transparent";
-                    if (!args.data.barColor) {
-                        args.data.barColor = "#333";
-                    }
-                },
-            });
-            eventCalendar.init();
-
+            initEvents();
             const app = {
                 elements: {
                     previous: document.getElementById('previous'),
@@ -76,39 +50,30 @@
                     initEvents(eventCalendar)
                 },
             };
-            app.init();
-            initEvents(eventCalendar);
         })
 
-        async function initEvents(eventCalendar)
+        async function initEvents()
         {
-            currWeek = eventCalendar.startDate.toString('yyyy-MM-dd');
-
             $.ajax({
-                url: '/api/events/' + currWeek,
+                url: '/api/events/10/0',
                 method: 'POST',
                 success: function (data) {
+                    $('.js-calendar-container').empty();
                     $.each(data, function () {
-                        var eventId = this.id;
-                        var eventData = {
-                            start: new DayPilot.Date(this.dateTime),
-                            end: new DayPilot.Date(this.dateTime).addHours(this.duration),
-                            id: this.id,
-                            html: '<div class="event-title">' + this.name + '</div><div class="event-allocation-container"><span class="event-allocation" data-event-id="' + this.id + '">' + this.allocation + '</span>/<span class="event-capacity">' + this.capacity + '</span></div>',
-                            barColor: "#6aa84f",
-                            capacity: this.capacity,
-                        };
-                        var e = new DayPilot.Event(eventData);
-                        daypilotEvent = eventCalendar.events.find(function (e) {
-                            return e.id() === eventId;
-                        });
-                        if (!daypilotEvent) {
-                            eventCalendar.events.add(e);
-                        } else {
-                            daypilotEvent.data.html = eventData.html;
-                            eventCalendar.events.update(daypilotEvent);
+                        $('.js-calendar-container').append(
+                            this
+                        );
+                    });
+                    var modal = new DayPilot.Modal({
+                        height: '600',
+                        onClose: function(args) {
+                            initEvents()
                         }
                     });
+
+                    $('.js-event-row').on('click', function () {
+                        modal.showUrl('/api/event/modal/' + $(this).data('event-id'));
+                    })
                 },
             })
         }

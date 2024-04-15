@@ -19,11 +19,20 @@
 .glyphicon-eye-open:before {
   content: '\e105';
 }
-body {
+body:not(.no-full-height) {
   min-height: 100vh;
 }
-body section {
+body:not(.no-full-height) section {
   min-height: 100% !important;
+}
+.no-padding {
+  padding: 0;
+}
+.no-margin {
+  margin: 0;
+}
+.padding-top-30 {
+  padding-top: 30px !important;
 }
 .navbar {
   max-width: 100%;
@@ -289,5 +298,27 @@ button:disabled {
     height: 60px;
     margin: 10px;
   }
+  .hero-content-eighty {
+    max-width: 100% !important;
+  }
+}
+.event-row {
+  margin: 5px 0 !important;
+  cursor: pointer;
+}
+.event-row .event-rows-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 10px;
+}
+.event-row .event-rows-container .title {
+  color: #0b0b0b;
+  font-weight: 600;
+  float: left;
+}
+.event-row .event-rows-container .value {
+  color: #0b0b0b;
+  font-weight: 600;
+  float: right;
 }
 /*# sourceMappingURL=style.css.map */

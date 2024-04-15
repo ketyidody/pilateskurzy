@@ -24,30 +24,22 @@
                                     {% if pastEvents is empty %}
                                         Nemáte žiadné minulé udalosti
                                     {% else %}
-                                        <div class="row profile-events-header-container">
-                                            <div class="col-sm-12 col-md-3">Názov</div>
-                                            <div class="col-sm-12 col-md-3">Dátum</div>
-                                            <div class="col-sm-12 col-md-3">Cena</div>
-                                            <div class="col-sm-12 col-md-3">Trvanie</div>
+                                        <div class="row">
+                                            {% for event in pastEvents %}
+                                                {{ include('pages/partial/event-row.html.twig', {'event': event}) }}
+                                            {% endfor %}
                                         </div>
-                                        {% for event in pastEvents %}
-                                            {{ include('pages/partial/event-row.html.twig', {'event': event}) }}
-                                        {% endfor %}
                                     {% endif %}
                                 </div>
                                 <div class="tab-pane fade show active" id="future-events" role="tabpanel" aria-labelledby="nav-future-events-tab">
                                     {% if futureEvents is empty %}
                                         Nemáte žiadné budúcé udalosti
                                     {% else %}
-                                        <div class="row profile-events-header-container">
-                                            <div class="col-sm-12 col-md-3">Názov</div>
-                                            <div class="col-sm-12 col-md-3">Dátum</div>
-                                            <div class="col-sm-12 col-md-3">Cena</div>
-                                            <div class="col-sm-12 col-md-3">Trvanie</div>
+                                        <div class="row">
+                                            {% for event in futureEvents %}
+                                                {{ include('pages/partial/event-row.html.twig', {'event': event}) }}
+                                            {% endfor %}
                                         </div>
-                                        {% for event in futureEvents %}
-                                            {{ include('pages/partial/event-row.html.twig', {'event': event}) }}
-                                        {% endfor %}
                                     {% endif %}
                                 </div>
                             </div>
