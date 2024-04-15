@@ -1,3 +1,29 @@
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot');
+  src: url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+  url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff2') format('woff2'),
+  url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff') format('woff'),
+  url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
+  url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font: normal normal 16px/1 'Glyphicons Halflings';
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  margin-right: 4px;
+}
+/* Add icons you will be using below */
+.glyphicon-fire:before {
+  content: '\e104';
+}
+.glyphicon-eye-open:before {
+  content: '\e105';
+}
+
 .navbar {
   max-width: 100%;
   padding: 1rem 9%;
@@ -289,4 +315,26 @@ button:disabled {
 
 .no-margin {
   margin: 0 !important;
+}
+
+.black {
+  color: black !important;
+}
+
+.panel-heading .accordion-toggle:after {
+  font-family: 'Glyphicons Halflings';
+  content: "\e114";
+  float: right;
+  color: grey;
+  transition: all 0.5s ease;
+}
+
+.panel-heading .accordion-toggle.collapsed:after {
+  //content: "\e080";
+  transform: rotate(-90deg);
+}
+
+::placeholder {
+  opacity: 0.5;
+  color: #fff !important;
 }
