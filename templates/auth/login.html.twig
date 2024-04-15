@@ -21,10 +21,10 @@
                                 <input type="password" id="login_password" name="login[password]" required="required" placeholder="heslo">
                             </div>
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                            <div class="col-md-6">
+                            <div class="col-xs-12 col-md-6">
                                 <button type="submit" class="site-btn"><span>Prihlásenie</span></button>
                             </div>
-                            <div class="col-md-6 margin-auto">
+                            <div class="col-xs-12 col-md-6 margin-auto">
                                 <a href="{{ path('auth_register') }}" class="site-btn"><span>Registrácia</span></a>
                             </div>
                         </div>

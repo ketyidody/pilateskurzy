@@ -3,7 +3,7 @@
         <nav class="header-warp">
             <!-- logo -->
             <a href="{{ sulu_content_root_path() }}" class="site-logo">
-                <div class="site-btn"><span>Pilateskurzy</span></div>
+                <div class="site-btn logo"><span>Pilateskurzy</span></div>
             </a>
             <div class="nav-switch">
                 <i class="fa fa-bars"></i>
@@ -14,18 +14,21 @@
                     {% for item in sulu_navigation_root_tree('main') %}
                         {% if (sulu_navigation_tree(item['uuid']) is empty) %}
                             <li class="nav-item">
-                                <a href="{{ sulu_content_path(item.url, item.webspaceKey) }}" class="no-margin" style="margin: 0;">
+                                <a href="{{ sulu_content_path(item.url, item.webspaceKey) }}" class="no-margin"
+                                   style="margin: 0;">
                                     {{ item.title }}
                                 </a>
                             </li>
                         {% else %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="{{ item.uuid }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="{{ item.uuid }}" data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">
                                     {{ item.title }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="{{ item.uuid }}">
                                     {% for subItem in sulu_navigation_tree(item['uuid']) %}
-                                        <a class="dropdown-item black" href="{{ sulu_content_path(subItem.url, subItem.webspaceKey) }}">
+                                        <a class="dropdown-item black"
+                                           href="{{ sulu_content_path(subItem.url, subItem.webspaceKey) }}">
                                             {{ subItem.title }}
                                         </a>
                                     {% endfor %}
@@ -34,11 +37,12 @@
                         {% endif %}
                     {% endfor %}
                     <li class="nav-item">
-                        <a class="nav-link dropdown-toggle" href="#" id="auth_actions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="auth_actions" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
                             {% if app.user %}
-                                <img src="{{ asset('img/icons/user-icon-yellow.svg') }}" />
+                                <img src="{{ asset('img/icons/user-icon-yellow.svg') }}"/>
                             {% else %}
-                                <img src="{{ asset('img/icons/user-icon-white.svg') }}" />
+                                <img src="{{ asset('img/icons/user-icon-white.svg') }}"/>
                             {% endif %}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="auth_actions">
@@ -65,14 +69,15 @@
                 </ul>
             </div>
 
-{#             mobile menu#}
+            {#             mobile menu #}
             <div class="accordion mobile-menu" id="mobile-menu">
                 {% for item in sulu_navigation_root_tree('main') %}
                     {% if (sulu_navigation_tree(item['uuid']) is empty) %}
                         <div class="card" id="card-{{ loop.index }}">
                             <div class="card-header" id="heading-{{ loop.index }}">
                                 <h2 class="mb-0">
-                                    <a href="{{ sulu_content_path(item.url, item.webspaceKey) }}" class="black btn btn-link btn-block text-left" type="button">
+                                    <a href="{{ sulu_content_path(item.url, item.webspaceKey) }}"
+                                       class="black btn btn-link btn-block text-left" type="button">
                                         {{ item.title }}
                                     </a>
                                 </h2>
@@ -82,17 +87,22 @@
                         <div class="card" id="card-{{ loop.index }}">
                             <div class="card-header" id="heading-{{ loop.index }}">
                                 <h2 class="mb-0 panel-heading">
-                                    <button class="btn btn-link btn-block text-left accordion-toggle collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{ loop.index }}" aria-expanded="false" aria-controls="collapse-{{ loop.index }}">
+                                    <button class="btn btn-link btn-block text-left accordion-toggle collapsed"
+                                            type="button" data-toggle="collapse"
+                                            data-target="#collapse-{{ loop.index }}" aria-expanded="false"
+                                            aria-controls="collapse-{{ loop.index }}">
                                         {{ item.title }}
                                     </button>
                                 </h2>
                             </div>
 
-                            <div id="collapse-{{ loop.index }}" class="collapse" aria-labelledby="heading-{{ loop.index }}" data-parent="#mobile-menu">
+                            <div id="collapse-{{ loop.index }}" class="collapse"
+                                 aria-labelledby="heading-{{ loop.index }}" data-parent="#mobile-menu">
                                 <div class="card-body">
                                     {% for subItem in sulu_navigation_tree(item['uuid']) %}
                                         <h2 class="mb-0">
-                                            <a class="black btn btn-link btn-block text-left" href="{{ sulu_content_path(subItem.url, subItem.webspaceKey) }}">
+                                            <a class="black btn btn-link btn-block text-left"
+                                               href="{{ sulu_content_path(subItem.url, subItem.webspaceKey) }}">
                                                 {{ subItem.title }}
                                             </a>
                                         </h2>
@@ -102,6 +112,60 @@
                         </div>
                     {% endif %}
                 {% endfor %}
+                <div class="card" id="card-auth">
+                    <div class="card-header" id="heading-auth">
+                        <h2 class="mb-0 panel-heading">
+                            <button class="btn btn-link btn-block text-left accordion-toggle collapsed" type="button"
+                                    data-toggle="collapse" data-target="#collapse-auth" aria-expanded="false"
+                                    aria-controls="collapse-auth">
+                                {% if app.user %}
+                                    Profil
+                                {% else %}
+                                    Prihlásenie
+                                {% endif %}
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapse-auth" class="collapse" aria-labelledby="heading-auth" data-parent="#mobile-menu">
+                        <div class="card-body">
+                            {% if app.user %}
+                                <h2 class="mb-0">
+                                    <a class="black btn btn-link btn-block text-left black"
+                                       href="{{ path('auth_profile') }}">
+                                        Moje údaje
+                                    </a>
+                                </h2>
+                                <h2 class="mb-0">
+                                    <a class="black btn btn-link btn-block text-left black"
+                                       href="{{ path('auth_events') }}">
+                                        Moje udalosti
+                                    </a>
+                                </h2>
+                                <h2 class="mb-0">
+                                    <a class="black btn btn-link btn-block text-left black"
+                                       href="{{ path('auth_logout') }}">
+                                        Odhlásenie
+                                    </a>
+                                </h2>
+                            {% else %}
+                                <h2 class="mb-0">
+                                    <a class="black btn btn-link btn-block text-left black"
+                                       href="{{ path('auth_login') }}">
+                                        Prihlásenie
+                                    </a>
+                                </h2>
+                                <h2 class="mb-0">
+                                    <a class="black btn btn-link btn-block text-left black"
+                                       href="{{ path('auth_register') }}">
+                                        Registrácia
+                                    </a>
+                                </h2>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </nav>
     {% endblock %}

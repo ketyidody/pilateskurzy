@@ -19,6 +19,12 @@
 .glyphicon-eye-open:before {
   content: '\e105';
 }
+body {
+  min-height: 100vh;
+}
+body section {
+  min-height: 100% !important;
+}
 .navbar {
   max-width: 100%;
   padding: 1rem 9%;
@@ -267,5 +273,21 @@ button:disabled {
 ::placeholder {
   opacity: 0.5;
   color: #fff !important;
+}
+@media (max-width: 768px) {
+  .hs-item {
+    align-items: flex-start !important;
+    background-size: cover !important;
+    height: 100vh !important;
+    background-position: bottom !important;
+  }
+  .contact-form {
+    width: 100% !important;
+  }
+  .site-btn:not(.logo) {
+    width: 250px;
+    height: 60px;
+    margin: 10px;
+  }
 }
 /*# sourceMappingURL=style.css.map */
