@@ -73,6 +73,11 @@
                         window.location.replace(data.redirectUrl.targetUrl);
                     }
                 })
+            });
+
+            $('.event-modal-cancel').on('click', function () {
+                var modal = DayPilot.Modal.opener();
+                modal.close();
             })
         })
     </script>
