@@ -41,8 +41,8 @@ class AuthenticationController extends AbstractController
         ]);
     }
 
-    #[Route('/simple_login', name: 'auth_simple_login')]
-    public function simpleLoginAction(AuthenticationUtils $authenticationUtils): Response
+    #[Route('/simple_login/{eventId}', name: 'auth_simple_login')]
+    public function simpleLoginAction(AuthenticationUtils $authenticationUtils, int $eventId): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -51,11 +51,12 @@ class AuthenticationController extends AbstractController
         return $this->render('auth/simple-login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
+            'eventId' => $eventId,
         ]);
     }
 
-    #[Route('/api/login', name: 'api_login', methods: ['POST'])]
-    public function apiLogin(#[CurrentUser] ?WebUser $user, Security $security): Response
+    #[Route('/api/login/{eventId}', name: 'api_login', methods: ['POST'])]
+    public function apiLogin(#[CurrentUser] ?WebUser $user, Security $security, int $eventId): Response
     {
         if (null === $user) {
             return $this->json([
@@ -68,7 +69,7 @@ class AuthenticationController extends AbstractController
         return $this->json([
             'user' => $user->getUserIdentifier(),
             'token' => $token,
-            'redirectUrl' => $this->redirect('/api/event/modal/6'),
+            'redirectUrl' => $this->redirectToRoute('app_event_modal_web_api', ['eventId' => $eventId]),
         ]);
     }
 

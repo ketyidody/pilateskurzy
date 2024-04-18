@@ -6,7 +6,7 @@
             <div class="hs-item set-bg padding-top-30" data-setbg="{{ asset('img/wall.jpg') }}">
                 <div class="container text-white">
                     <div class="event-modal-container">
-                        <form class="contact-form max-width" action="{{ path('api_login') }}" id="api-login-form"
+                        <form class="contact-form max-width" action="{{ path('api_login', {eventId: eventId}) }}" id="api-login-form"
                               method="post">
                             <div class="event-modal-header">
                                 <h3>Prihlásenie</h3>
@@ -66,7 +66,7 @@
                 }
                 $.ajax({
                     type: "POST",
-                    url: "{{ path('api_login') }}",
+                    url: "{{ path('api_login', {eventId: eventId}) }}",
                     data: JSON.stringify(credentials),
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {

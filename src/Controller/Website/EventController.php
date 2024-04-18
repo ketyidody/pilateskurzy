@@ -163,7 +163,7 @@ class EventController extends AbstractController
     {
         $user = $this->getUser();
         if (!$user) {
-            return $this->redirectToRoute('auth_simple_login');
+            return $this->redirectToRoute('auth_simple_login', ['eventId' => $eventId]);
         }
         $event = $this->doctrine->getRepository(Event::class)->find($eventId);
 
