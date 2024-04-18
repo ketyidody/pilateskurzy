@@ -25,6 +25,12 @@ class EventController extends AbstractController
     ) {
     }
 
+    /**
+     * @deprecated
+     * @param string $dateString
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function getEventsForMonthAction(string $dateString): JsonResponse
     {
         // if it is monday, get this monday, if it is any other day, get the previous monday
@@ -89,7 +95,10 @@ class EventController extends AbstractController
         $data = [];
         foreach ($res->getQuery()->execute() as $eventArray) {
             $event = $this->em->getRepository(Event::class)->find($eventArray['id']);
-            $data[] = $this->renderView('pages/partial/event-row.html.twig', ['event' => $event]);
+            $data[] = $this->renderView('pages/partial/event-row.html.twig', [
+                'event' => $event,
+                'allocation' => count($event->getUsers()),
+            ]);
         }
 
         return $this->json($data, Response::HTTP_OK);

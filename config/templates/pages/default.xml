@@ -41,8 +41,6 @@
                 <title lang="en">Description</title>
                 <title lang="de">Desc</title>
             </meta>
-
-            <tag name="sulu.rlp"/>
         </property>
 
         <property name="article" type="text_editor">

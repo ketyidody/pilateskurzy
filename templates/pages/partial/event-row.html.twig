@@ -1,4 +1,5 @@
-<div class="event-row no-margin js-event-row col-xs-12 col-md-6" data-event-id="{{ event.id }}">
+<div class="event-row no-margin js-event-row col-xs-12 col-md-6 {% if allocation is defined and allocation == event.capacity %} disabled {% endif %}"
+     data-event-id="{{ event.id }}">
     <div class="event-rows-container">
         <div class="row">
             <div class="col-sm-12">
@@ -24,5 +25,15 @@
                 <span class="value">{{ event.duration }}</span>
             </div>
         </div>
+        {% if allocation is defined %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <span class="title">Allokácia:</span>
+                    <span class="value {% if allocation == event.capacity %} occupied {% endif %}">
+                        {{ allocation }} / {{ event.capacity }}
+                    </span>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>

@@ -3,7 +3,7 @@
 {% block content %}
     <!-- Hero section -->
     <div class="section fp-auto-height" id="hero-section">
-        <div class="section about-section about-one set-bg" data-setbg="{{ asset('img/slider/yoga-3.jpg') }}">
+        <div class="section about-section about-one set-bg" data-setbg="{{ asset('img/slider/yoga-7.jpg') }}">
             <div class="sp-container">
                 <div class="hero-content-eighty text-white">
                     <h2>{{ content.title }}</h2>
@@ -71,7 +71,7 @@
                         }
                     });
 
-                    $('.js-event-row').on('click', function () {
+                    $('.js-event-row:not(.disabled)').on('click', function () {
                         modal.showUrl('/api/event/modal/' + $(this).data('event-id'));
                     })
                 },

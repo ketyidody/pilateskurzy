@@ -34,6 +34,9 @@ body:not(.no-full-height) section {
 .padding-top-30 {
   padding-top: 30px !important;
 }
+.no-left-margin {
+  margin-left: 0 !important;
+}
 .navbar {
   max-width: 100%;
   padding: 1rem 9%;
@@ -283,12 +286,20 @@ button:disabled {
   opacity: 0.5;
   color: #fff !important;
 }
+.hs-item {
+  height: 100vh !important;
+  align-items: baseline !important;
+}
+.hs-item .container {
+  margin-top: 20%;
+}
 @media (max-width: 768px) {
   .hs-item {
     align-items: flex-start !important;
     background-size: cover !important;
     height: 100vh !important;
     background-position: bottom !important;
+    padding-top: 20% !important;
   }
   .contact-form {
     width: 100% !important;
@@ -306,6 +317,10 @@ button:disabled {
   margin: 5px 0 !important;
   cursor: pointer;
 }
+.event-row.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
 .event-row .event-rows-container {
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
@@ -320,5 +335,8 @@ button:disabled {
   color: #0b0b0b;
   font-weight: 600;
   float: right;
+}
+.event-row .event-rows-container .value.occupied {
+  color: red;
 }
 /*# sourceMappingURL=style.css.map */
