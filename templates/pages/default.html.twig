@@ -8,7 +8,9 @@
                 <div class="hero-content text-white no-left-margin">
                     <h2>{{ content.title }}</h2>
                     <p>{{ content.description|raw }}</p>
-                    <div id="about-more" class="site-btn"><span>Čitať viac</span></div>
+                    {% if (content.article) %}
+                        <div id="about-more" class="site-btn"><span>Čitať viac</span></div>
+                    {% endif %}
                 </div>
             </div>
         </div>

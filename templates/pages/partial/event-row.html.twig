@@ -1,27 +1,24 @@
 <div class="event-row no-margin js-event-row col-xs-12 col-md-6 {% if allocation is defined and allocation == event.capacity %} disabled {% endif %}"
+     {% if not app.user %} data-login-url="{{ path('auth_login') }}" {% endif %}
      data-event-id="{{ event.id }}">
     <div class="event-rows-container">
         <div class="row">
             <div class="col-sm-12">
-{#                <span class="title">Názov:</span>#}
                 <span class="value">{{ event.name }}</span>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-{#                <span class="title">Dátum:</span>#}
                 <span class="value">{{ event.dateTime.format('d. m. Y H:i') }}</span>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-{#                <span class="title">Cena:</span>#}
                 <span class="value">{{ event.price }} &euro;</span>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-{#                <span class="title">Trvanie:</span>#}
                 <span class="value">{{ event.duration }}h</span>
             </div>
         </div>

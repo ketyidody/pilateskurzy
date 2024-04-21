@@ -72,6 +72,12 @@
                     });
 
                     $('.js-event-row:not(.disabled)').on('click', function () {
+                        var loginUrl = $(this).data('login-url');
+                        console.log(loginUrl);
+                        if (loginUrl) {
+                            window.location.replace(loginUrl);
+                            return;
+                        }
                         modal.showUrl('/api/event/modal/' + $(this).data('event-id'));
                     })
                 },

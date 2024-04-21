@@ -358,4 +358,10 @@ button:disabled {
 .section-container {
   background-color: rgba(119, 53, 168, 0.3);
 }
+.dropdown-toggle::after {
+  width: 10px;
+}
+.testimonial-content p {
+  margin-bottom: 0 !important;
+}
 /*# sourceMappingURL=style.css.map */

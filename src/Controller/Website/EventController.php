@@ -89,7 +89,8 @@ class EventController extends AbstractController
                 'fromDate' => (new \DateTime())->format('Y-m-d'),
             ])
             ->setMaxResults($limit)
-            ->setFirstResult($offset);
+            ->setFirstResult($offset)
+            ->orderBy('e.dateTime', 'ASC')
         ;
 
         $data = [];
