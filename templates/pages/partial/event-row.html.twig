@@ -3,34 +3,33 @@
     <div class="event-rows-container">
         <div class="row">
             <div class="col-sm-12">
-                <span class="title">Názov:</span>
+{#                <span class="title">Názov:</span>#}
                 <span class="value">{{ event.name }}</span>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <span class="title">Dátum:</span>
-                <span class="value">{{ event.dateTime.format('Y-m-d H:i:s') }}</span>
+{#                <span class="title">Dátum:</span>#}
+                <span class="value">{{ event.dateTime.format('d. m. Y H:i') }}</span>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <span class="title">Cena:</span>
-                <span class="value">{{ event.price }}</span>
+{#                <span class="title">Cena:</span>#}
+                <span class="value">{{ event.price }} &euro;</span>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <span class="title">Trvanie:</span>
-                <span class="value">{{ event.duration }}</span>
+{#                <span class="title">Trvanie:</span>#}
+                <span class="value">{{ event.duration }}h</span>
             </div>
         </div>
-        {% if allocation is defined %}
+        {% if allocation is defined and allocation == event.capacity %}
             <div class="row">
                 <div class="col-sm-12">
-                    <span class="title">Allokácia:</span>
                     <span class="value {% if allocation == event.capacity %} occupied {% endif %}">
-                        {{ allocation }} / {{ event.capacity }}
+                        Obsadené
                     </span>
                 </div>
             </div>

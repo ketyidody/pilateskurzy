@@ -44,6 +44,10 @@ body:not(.no-full-height) {
   padding-top: 30px !important;
 }
 
+.margin-top-30 {
+  margin-top: 30px;
+}
+
 .no-left-margin {
   margin-left: 0 !important;
 }
@@ -416,27 +420,39 @@ button:disabled {
   &.disabled {
     opacity: 0.5;
     cursor: default;
+
+    .event-rows-container:hover {
+      transform: none;
+    }
   }
 
   .event-rows-container {
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     padding: 10px;
+    transition: transform 0.2s ease-out;
 
     .title {
-      color: #0b0b0b;
       font-weight: 600;
-      float: left;
+      //float: left;
     }
 
     .value {
-      color: #0b0b0b;
       font-weight: 600;
-      float: right;
+      //float: right;
 
       &.occupied {
         color: red;
       }
     }
+
+    &:hover {
+      transform: scale(1.05);
+      transition: transform 0.2s ease-in;
+    }
   }
+}
+
+.section-container {
+  background-color: rgba(119, 53, 168, 0.3);
 }

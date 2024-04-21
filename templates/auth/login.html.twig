@@ -6,7 +6,7 @@
         <div class="hero-slider owl-carousel">
             <div class="hs-item set-bg" data-setbg="{{ asset('img/slider/yoga-7.jpg') }}">
                 <div class="container text-white">
-                    <h1>Prihlásenie</h1>
+                    <h3>Prihlásenie</h3>
                     <form class="contact-form" action="{{ path('auth_login') }}" method="post">
                         {% if error %}
                             <div class="auth-error">
@@ -15,10 +15,10 @@
                         {% endif %}
                         <div class="row">
                             <div class="col-md-12">
-                                <input type="text" id="login_email" name="login[email]" required="required" placeholder="e-mail" value="{{ last_username }}">
+                                <input type="text" id="login_email" name="login[email]" required="required" placeholder="E-mail" value="{{ last_username }}">
                             </div>
                             <div class="col-md-12">
-                                <input type="password" id="login_password" name="login[password]" required="required" placeholder="heslo">
+                                <input type="password" id="login_password" name="login[password]" required="required" placeholder="Heslo">
                             </div>
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                             <div class="col-xs-12 col-md-6">
@@ -28,10 +28,10 @@
                                 <a href="{{ path('auth_register') }}" class="site-btn"><span>Registrácia</span></a>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row padding-top-30">
                             <div class="col-md-12 float-left">
                                 <a href="{{ path('auth_password_reset') }}">
-                                    Obnova hesla
+                                    Zabudol som heslo
                                 </a>
                             </div>
                         </div>

@@ -13,14 +13,11 @@
                             <div class="event-modal-description">
                                 {{ eventDescription|raw }}
                             </div>
-                            <div class="event-modal-date_time">
-                                Dátum/Čas: {{ eventStart }} - {{ eventEnd }}
-                            </div>
                             <div class="event-modal-allocation">
                                 Kapacita: {{ eventAllocation }} / {{ eventCapacity }}
                             </div>
                             <div class="event-modal-price">
-                                Cena: {{ eventPrice }}
+                                {{ eventPrice }} &euro;
                             </div>
                         </div>
                         <div class="event-modal-footer">

@@ -34,6 +34,9 @@ body:not(.no-full-height) section {
 .padding-top-30 {
   padding-top: 30px !important;
 }
+.margin-top-30 {
+  margin-top: 30px;
+}
 .no-left-margin {
   margin-left: 0 !important;
 }
@@ -330,22 +333,29 @@ button:disabled {
   opacity: 0.5;
   cursor: default;
 }
+.event-row.disabled .event-rows-container:hover {
+  transform: none;
+}
 .event-row .event-rows-container {
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   padding: 10px;
+  transition: transform 0.2s ease-out;
 }
 .event-row .event-rows-container .title {
-  color: #0b0b0b;
   font-weight: 600;
-  float: left;
 }
 .event-row .event-rows-container .value {
-  color: #0b0b0b;
   font-weight: 600;
-  float: right;
 }
 .event-row .event-rows-container .value.occupied {
   color: red;
+}
+.event-row .event-rows-container:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in;
+}
+.section-container {
+  background-color: rgba(119, 53, 168, 0.3);
 }
 /*# sourceMappingURL=style.css.map */

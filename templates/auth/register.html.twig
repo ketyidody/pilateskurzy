@@ -6,7 +6,7 @@
         <div class="hero-slider owl-carousel">
             <div class="hs-item set-bg" data-setbg="{{ asset('img/slider/yoga-7.jpg') }}">
                 <div class="container text-white">
-                    <h1>Prihlásenie</h1>
+                    <h3>Registrácia</h3>
                     {% if form is defined %}
                         {{ form_start(form, {'attr': {'class': 'contact-form'}}) }}
                         {{ form_errors(form) }}
@@ -23,7 +23,7 @@
                                 {{ form_widget(form.last_name, {'attr': {'placeholder': 'Priezvisko'}}) }}
                             </div>
                             <div class="col-md-12">
-                                {{ form_widget(form.email, {'attr': {'placeholder': 'e-mail'}}) }}
+                                {{ form_widget(form.email, {'attr': {'placeholder': 'E-mail'}}) }}
                             </div>
                             <div class="col-md-12">
                                 {{ form_widget(form.password, {'attr': {'placeholder': 'Heslo'}}) }}

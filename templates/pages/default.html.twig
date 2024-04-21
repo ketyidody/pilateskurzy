@@ -8,7 +8,7 @@
                 <div class="hero-content text-white no-left-margin">
                     <h2>{{ content.title }}</h2>
                     <p>{{ content.description|raw }}</p>
-                    <div id="about-more" class="site-btn"><span>Prečítať viac</span></div>
+                    <div id="about-more" class="site-btn"><span>Čitať viac</span></div>
                 </div>
             </div>
         </div>
@@ -18,7 +18,7 @@
 
     {% if (content.article) %}
         <!-- Testimonial section -->
-        <div id="content" class="section testimonial-section set-bg text-white">
+        <div id="content" class="section testimonial-section section-container text-white">
             <div class="container">
                 <div class="testimonial-content">
                     {{ content.article|raw }}
