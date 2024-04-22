@@ -39,11 +39,7 @@
                     <li class="nav-item">
                         <a class="nav-link dropdown-toggle" href="#" id="auth_actions" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
-                            {% if app.user %}
-                                <img src="{{ asset('img/icons/user-icon-yellow.svg') }}"/>
-                            {% else %}
-                                <img src="{{ asset('img/icons/user-icon-white.svg') }}"/>
-                            {% endif %}
+                            Prihlásenie
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="auth_actions">
                             {% if app.user %}
@@ -118,11 +114,7 @@
                             <button class="btn btn-link btn-block text-left accordion-toggle collapsed" type="button"
                                     data-toggle="collapse" data-target="#collapse-auth" aria-expanded="false"
                                     aria-controls="collapse-auth">
-                                {% if app.user %}
-                                    Profil
-                                {% else %}
-                                    Prihlásenie
-                                {% endif %}
+                                Prihlásenie
                             </button>
                         </h2>
                     </div>

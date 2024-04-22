@@ -7,7 +7,7 @@
 
     <view>pages/event</view>
     <controller>Sulu\Bundle\WebsiteBundle\Controller\DefaultController::indexAction</controller>
-    <cacheLifetime>604800</cacheLifetime>
+    <cacheLifetime>86400</cacheLifetime>
 
     <meta>
         <title lang="en">Event</title>

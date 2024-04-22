@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+<template xmlns="http://schemas.sulu.io/template/template"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/template-1.0.xsd">
+
+    <key>lecturer</key>
+
+    <view>pages/lecturer</view>
+    <controller>Sulu\Bundle\WebsiteBundle\Controller\DefaultController::indexAction</controller>
+    <cacheLifetime>86400</cacheLifetime>
+
+    <meta>
+        <title lang="en">Lecturer</title>
+        <title lang="de">Dozent</title>
+    </meta>
+
+    <properties>
+        <property name="title" type="text_line" mandatory="true">
+            <meta>
+                <title lang="en">Title</title>
+                <title lang="de">Titel</title>
+            </meta>
+            <params>
+                <param name="headline" value="true"/>
+            </params>
+
+            <tag name="sulu.rlp.part"/>
+        </property>
+
+        <property name="url" type="resource_locator" mandatory="true">
+            <meta>
+                <title lang="en">Resourcelocator</title>
+                <title lang="de">Adresse</title>
+            </meta>
+
+            <tag name="sulu.rlp"/>
+        </property>
+
+        <property name="description" type="text_editor">
+            <meta>
+                <title lang="en">Description</title>
+                <title lang="de">Desc</title>
+            </meta>
+        </property>
+
+        <property name="lecturer_1_description" type="text_editor">
+            <meta>
+                <title lang="en">Lecturer 1 description</title>
+                <title lang="de">Dozent 1 desc</title>
+            </meta>
+        </property>
+
+        <property name="lecturer_1_image" type="single_media_selection">
+            <meta>
+                <title lang="en">Lecturer 1 image</title>
+                <title lang="de">Dozent 1 Bild</title>
+            </meta>
+        </property>
+
+        <property name="lecturer_2_description" type="text_editor">
+            <meta>
+                <title lang="en">Lecturer 2 description</title>
+                <title lang="de">Dozent 2 desc</title>
+            </meta>
+        </property>
+
+        <property name="lecturer_2_image" type="single_media_selection">
+            <meta>
+                <title lang="en">Lecturer 2 image</title>
+                <title lang="de">Dozent 2 Bild</title>
+            </meta>
+        </property>
+
+        <property name="lecturer_3_description" type="text_editor">
+            <meta>
+                <title lang="en">Lecturer 3 description</title>
+                <title lang="de">Dozent 3 desc</title>
+            </meta>
+        </property>
+
+        <property name="lecturer_3_image" type="single_media_selection">
+            <meta>
+                <title lang="en">Lecturer 3 image</title>
+                <title lang="de">Dozent 3 Bild</title>
+            </meta>
+        </property>
+    </properties>
+</template>
