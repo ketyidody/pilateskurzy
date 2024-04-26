@@ -21,5 +21,7 @@
   "app.capacity": "Capacity",
   "app.event_type": "Event type",
   "app.event_types": "Event types",
+  "app.web_user": "User",
+  "app.web_users": "Users",
   "app.name": "Name"
 }

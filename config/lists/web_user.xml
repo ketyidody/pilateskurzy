@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<list xmlns="http://schemas.sulu.io/list-builder/list">
+    <key>web_user</key>
+
+    <properties>
+        <property name="id" visibility="no" translation="sulu_admin.id">
+            <field-name>id</field-name>
+            <entity-name>App\Entity\WebUser</entity-name>
+        </property>
+
+        <property name="firstName" visibility="yes" translation="app.firstName">
+            <field-name>firstName</field-name>
+            <entity-name>App\Entity\WebUser</entity-name>
+        </property>
+
+        <property name="lastName" visibility="yes" translation="app.lastName">
+            <field-name>lastName</field-name>
+            <entity-name>App\Entity\WebUser</entity-name>
+        </property>
+
+        <property name="email" visibility="yes" translation="app.email">
+            <field-name>email</field-name>
+            <entity-name>App\Entity\WebUser</entity-name>
+        </property>
+    </properties>
+</list>

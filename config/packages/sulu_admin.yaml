@@ -19,22 +19,32 @@ sulu_admin:
             routes:
                 list: 'app.get_eventreoccurrences'
                 detail: 'app.get_eventreoccurrence'
+        web_user:
+            routes:
+                list: 'app.get_web_users'
+                detail: 'app.get_web_user'
     field_type_options:
-        single_selection:
-            attendee_selection:
+        selection:
+            web_users_selection:
                 default_type: 'list_overlay'
-                resource_key: 'users'
+                resource_key: 'web_user'
+                view:
+                    name: 'app.web_user_edit_form'
+                    result_to_view:
+                        id: 'id'
                 types:
                     list_overlay:
                         adapter: 'table'
-                        list_key: 'users'
+                        list_key: 'web_user'
                         display_properties:
                             - 'id'
-                            - 'username'
+                            - 'firstName'
+                            - 'lastName'
                             - 'email'
-                        icon: 'su-calendar'
-                        overlay_title: 'app.attendee'
-                        empty_text: 'app.location.no_selections'
+                        icon: 'su-user'
+                        label: 'app.web_users'
+                        overlay_title: 'app.web_users'
+        single_selection:
             event_type_selection:
                 default_type: 'list_overlay'
                 resource_key: 'event_type'
@@ -49,6 +59,6 @@ sulu_admin:
                         display_properties:
                             - 'id'
                             - 'name'
-                        icon: 'su-calendar'
+                        icon: 'su-tag'
                         overlay_title: 'app.event_type'
                         empty_text: 'app.location.no_selections'

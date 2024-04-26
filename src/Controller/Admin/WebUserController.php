@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\Event;
 use App\Entity\WebUser;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
@@ -23,9 +22,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
- * @RouteResource("event")
+ * @RouteResource("web_user")
  */
-class EventController extends AbstractController implements SecuredControllerInterface, ClassResourceInterface
+class WebUserController extends AbstractController implements SecuredControllerInterface, ClassResourceInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -38,15 +37,13 @@ class EventController extends AbstractController implements SecuredControllerInt
 
     public function cgetAction(): Response
     {
-        $fieldDescriptors = $this->fieldDescriptorFactory->getFieldDescriptors(Event::RESOURCE_KEY) ?? [];
-        $listBuilder = $this->listBuilderFactory->create(Event::class);
+        $fieldDescriptors = $this->fieldDescriptorFactory->getFieldDescriptors(WebUser::RESOURCE_KEY) ?? [];
+        $listBuilder = $this->listBuilderFactory->create(WebUser::class);
         $this->restHelper->initializeListBuilder($listBuilder, $fieldDescriptors);
 
-        $events = $this->entityManager->getRepository(Event::class)->findAll();
-
         $listRepresentation = new PaginatedRepresentation(
-            $this->entityCollectionToArray($events),
-            Event::RESOURCE_KEY,
+            $listBuilder->execute(),
+            WebUser::RESOURCE_KEY,
             (int) $listBuilder->getCurrentPage(),
             (int) $listBuilder->getLimit(),
             (int) $listBuilder->count(),
@@ -59,18 +56,13 @@ class EventController extends AbstractController implements SecuredControllerInt
     {
         $result = [];
 
-        /** @var Event $entity */
+        /** @var WebUser $entity */
         foreach ($entities as $entity) {
             $result[] = [
-                'dateTime' => $entity->getDateTime()->format('Y-m-d H:i:s'),
-                'name' => $entity->getName(),
-                'event_type' => $entity->getEventType()?->__toString(),
-                'capacity' => $entity->getCapacity(),
-                'duration' => $entity->getDuration() . 'h',
-                'description' => $entity->getDescription(),
-                'price' => $entity->getPrice(),
                 'id' => $entity->getId(),
-                'web_users' => $entity->getWebUsers()->toArray(),
+                'email' => $entity->getEmail(),
+                'firstName' => $entity->getFirstName(),
+                'lastName' => $entity->getLastName(),
             ];
         }
 
@@ -79,13 +71,13 @@ class EventController extends AbstractController implements SecuredControllerInt
 
     public function getAction(int $id): Response
     {
-        $event = $this->entityManager->getRepository(Event::class)->find($id);
-        if (!$event) {
+        $webUser = $this->entityManager->getRepository(WebUser::class)->find($id);
+        if (!$webUser) {
             throw new NotFoundHttpException();
         }
 
         return $this->json(
-            $this->getDataForEntity($event),
+            $this->getDataForEntity($webUser),
             Response::HTTP_OK,
             [],
             [ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($obj) { return $obj->getId(); }],
@@ -94,78 +86,61 @@ class EventController extends AbstractController implements SecuredControllerInt
 
     public function putAction(Request $request, int $id): Response
     {
-        $event = $this->entityManager->getRepository(Event::class)->find($id);
-        if (!$event) {
+        $webUser = $this->entityManager->getRepository(WebUser::class)->find($id);
+        if (!$webUser) {
             throw new NotFoundHttpException();
         }
 
         $data = $request->toArray();
-        $this->mapDataToEntity($data, $event);
+        $this->mapDataToEntity($data, $webUser);
         $this->entityManager->flush();
 
-        return $this->json($this->getDataForEntity($event));
+        return $this->json($this->getDataForEntity($webUser));
     }
 
     public function postAction(Request $request): Response
     {
         $entityManager = $this->entityManager;
-        $event = new Event($entityManager);
+        $webUser = new WebUser($entityManager);
 
         $data = $request->toArray();
-        $this->mapDataToEntity($data, $event);
-        $this->entityManager->persist($event);
+        $this->mapDataToEntity($data, $webUser);
+        $this->entityManager->persist($webUser);
         $this->entityManager->flush();
 
-        return $this->json($this->getDataForEntity($event), 201);
+        return $this->json($this->getDataForEntity($webUser), 201);
     }
 
     public function deleteAction(int $id): Response
     {
-        /** @var Event $Event */
-        $Event = $this->entityManager->getReference(Event::class, $id);
-        $this->entityManager->remove($Event);
+        /** @var WebUser $WebUser */
+        $WebUser = $this->entityManager->getReference(WebUser::class, $id);
+        $this->entityManager->remove($WebUser);
         $this->entityManager->flush();
 
         return $this->json(null, 204);
     }
 
-    protected function mapDataToEntity(array $data, Event $entity): void
+    protected function mapDataToEntity(array $data, WebUser $entity): void
     {
-        $entity->setDateTime(new \DateTime($data['dateTime']));
-        $entity->setCapacity((int) $data['capacity']);
-        $entity->setDuration((int) $data['duration']);
-        $entity->setName($data['name']);
-        $entity->setEventType($data['event_type']);
-        $entity->setDescription($data['description']);
-        $entity->setPrice($data['price']);
-        $usersArray = [];
-        foreach ($data['web_users'] as $userId) {
-            $usersArray[] = $this->entityManager->getRepository(WebUser::class)->find($userId);
-        }
-        $usersCollection = new \Doctrine\Common\Collections\ArrayCollection($usersArray);
-        $entity->setWebUsers($usersCollection);
+        $entity->setEmail($data['email']);
+        $entity->setFirstName($data['firstName']);
+        $entity->setLastName($data['lastName']);
     }
 
-    protected function getDataForEntity(Event $entity): array
+    protected function getDataForEntity(WebUser $entity): array
     {
-        $dateTime = $entity->getDateTime();
-
         return [
             'id' => $entity->getId(),
-            'dateTime' => $dateTime ? $dateTime->format('c') : null,
-            'duration' => $entity->getDuration(),
-            'capacity' => $entity->getCapacity(),
-            'name' => $entity->getName(),
-            'event_type' => $entity->getEventType(),
-            'description' => $entity->getDescription(),
-            'price' => $entity->getPrice(),
-            'web_users' => $entity->getWebUsers(),
+            'email' => $entity->getEmail(),
+            'firstName' => $entity->getFirstName(),
+            'lastName' => $entity->getLastName(),
         ];
     }
 
     public function getSecurityContext(): string
     {
-        return Event::SECURITY_CONTEXT;
+        return WebUser::SECURITY_CONTEXT;
     }
 
     public function getLocale(Request $request): ?string

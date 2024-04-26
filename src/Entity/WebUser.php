@@ -15,6 +15,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\HasLifecycleCallbacks]
 class WebUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const RESOURCE_KEY = 'web_user';
+    public const SECURITY_CONTEXT = 'sulu.web_user.web_user';
+
     #[ORM\Id]
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue]
@@ -39,7 +42,6 @@ class WebUser implements UserInterface, PasswordAuthenticatedUserInterface
     protected string $passwordResetHash;
 
     public function __construct() {
-        $this->events = new ArrayCollection();
     }
 
     #[ORM\PrePersist]

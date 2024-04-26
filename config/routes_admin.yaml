@@ -3,10 +3,10 @@ controllers:
     resource: ../src/Controller/Admin/
     type: attribute
 
-app_event_reoccurrence_api:
+app_web_user_api:
     type: rest
     prefix: /admin/api
-    resource: App\Controller\Admin\EventReoccurrenceController
+    resource: App\Controller\Admin\WebUserController
     name_prefix: app.
 
 app_event_api:

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectManagerAware;
+use JMS\Serializer\Annotation as Serializer;
 
 #[ORM\Entity(repositoryClass: \App\Repository\EventRepository::class)]
 class Event implements ObjectManagerAware
@@ -46,17 +47,17 @@ class Event implements ObjectManagerAware
     #[ORM\JoinColumn(name: 'event_type_id', referencedColumnName: 'id')]
     protected ?EventType $eventType;
 
-    #[ORM\JoinTable(name: 'users_events')]
+    #[ORM\JoinTable(name: 'events_users')]
     #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'user_id', referencedColumnName: 'id')]
     #[ORM\ManyToMany(targetEntity: WebUser::class)]
-    protected Collection $users;
+    protected Collection $webUsers;
 
     protected ?ObjectManager $entityManager = null;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->users = new ArrayCollection();
+        $this->webUsers = new ArrayCollection();
         $this->entityManager = $entityManager;
     }
 
@@ -132,22 +133,22 @@ class Event implements ObjectManagerAware
     /**
      * @return mixed
      */
-    public function getUsers()
+    public function getWebUsers(): Collection
     {
-        return $this->users;
+        return $this->webUsers;
     }
 
     /**
-     * @param mixed $attendee
+     * @param mixed $webUsers
      */
-    public function setUsers($users): void
+    public function setWebUsers(Collection $webUsers): void
     {
-        $this->users = $users;
+        $this->webUsers = $webUsers;
     }
 
     public function addUser(WebUser $user): void
     {
-        $this->users->add($user);
+        $this->webUsers->add($user);
     }
 
     /**

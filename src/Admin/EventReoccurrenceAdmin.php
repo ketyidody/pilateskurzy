@@ -29,14 +29,14 @@ class EventReoccurrenceAdmin extends Admin
 
     public function configureNavigationItems(NavigationItemCollection $navigationItemCollection): void
     {
-        if ($this->securityChecker->hasPermission(EventReoccurrence::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
-            $rootNavigationItem = new NavigationItem('app.event_reoccurrences');
-            $rootNavigationItem->setView(static::EVENT_REPCCURRENCE_LIST_VIEW);
-            $rootNavigationItem->setIcon('su-calendar');
-            $rootNavigationItem->setPosition(30);
-
-            $navigationItemCollection->add($rootNavigationItem);
-        }
+//        if ($this->securityChecker->hasPermission(EventReoccurrence::SECURITY_CONTEXT, PermissionTypes::EDIT)) {
+//            $rootNavigationItem = new NavigationItem('app.event_reoccurrences');
+//            $rootNavigationItem->setView(static::EVENT_REPCCURRENCE_LIST_VIEW);
+//            $rootNavigationItem->setIcon('su-calendar');
+//            $rootNavigationItem->setPosition(30);
+//
+//            $navigationItemCollection->add($rootNavigationItem);
+//        }
     }
 
     public function configureViews(ViewCollection $viewCollection): void

@@ -63,7 +63,7 @@ class EventController extends AbstractController
         $data = [];
         foreach ($res->getQuery()->execute() as $eventArray) {
             $event = $this->em->getRepository(Event::class)->find($eventArray['id']);
-            $data[] = array_merge($eventArray, ['allocation' => count($event->getUsers())]);
+            $data[] = array_merge($eventArray, ['allocation' => $event->getWebUsers()->count()]);
         }
 
         return $this->json($data, Response::HTTP_OK);
@@ -98,7 +98,7 @@ class EventController extends AbstractController
             $event = $this->em->getRepository(Event::class)->find($eventArray['id']);
             $data[] = $this->renderView('pages/partial/event-row.html.twig', [
                 'event' => $event,
-                'allocation' => count($event->getUsers()),
+                'allocation' => $event->getWebUsers()->count(),
             ]);
         }
 
@@ -126,7 +126,7 @@ class EventController extends AbstractController
             ], Response::HTTP_FORBIDDEN);
         }
 
-        if ($event->getCapacity() <= $event->getUsers()->count()) {
+        if ($event->getCapacity() <= $event->getWebUsers()->count()) {
             return $this->json([
                 'status' => 'error',
                 'message' => 'Event is full'
@@ -135,7 +135,7 @@ class EventController extends AbstractController
 
         $event->addUser($webUser);
 
-        if (!$event->getUsers()->contains($webUser)) {
+        if (!$event->getWebUsers()->contains($webUser)) {
             return $this->json([
                 'status' => 'error',
                 'message' => 'User not registered'
@@ -156,7 +156,7 @@ class EventController extends AbstractController
         $event = $this->doctrine->getRepository(Event::class)->find($eventId);
 
         return $this->json([
-            'allocation' => $event?->getUsers()->count(),
+            'allocation' => $event?->getWebUsers()->count(),
         ], Response::HTTP_OK);
     }
 
@@ -169,18 +169,18 @@ class EventController extends AbstractController
         $event = $this->doctrine->getRepository(Event::class)->find($eventId);
 
         $alreadyOnEvent = false;
-        if ($event->getUsers()->contains($user)) {
+        if ($event->getWebUsers()->contains($user)) {
             $alreadyOnEvent = true;
         }
 
-        $eventIsFull = $event->getCapacity() <= $event->getUsers()->count();
+        $eventIsFull = $event->getCapacity() <= $event->getWebUsers()->count();
 
         return $this->render('pages/partial/event-modal.html.twig', [
             'eventId' => $eventId,
             'eventName' => $event->getName(),
             'eventDescription' => $event->getDescription(),
             'eventPrice' => $event->getPrice(),
-            'eventAllocation' => $event?->getUsers()->count(),
+            'eventAllocation' => $event?->getWebUsers()->count(),
             'eventCapacity' => $event->getCapacity(),
             'eventStart' => $event->getDateTime()->format('Y-m-d H:i:s'),
             'eventEnd' => $event->getDateTime()->add(new \DateInterval('PT' .   $event->getDuration() . 'H'))->format('Y-m-d H:i:s'),
@@ -198,7 +198,7 @@ class EventController extends AbstractController
             'eventName' => $event->getName(),
             'eventDescription' => $event->getDescription(),
             'eventPrice' => $event->getPrice(),
-            'eventAllocation' => $event?->getUsers()->count(),
+            'eventAllocation' => $event?->getWebUsers()->count(),
             'eventCapacity' => $event->getCapacity(),
             'eventStart' => $event->getDateTime()->format('Y-m-d H:i:s'),
             'eventEnd' => $event->getDateTime()->add(new \DateInterval('PT' .   $event->getDuration() . 'H'))->format('Y-m-d H:i:s'),

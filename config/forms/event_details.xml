@@ -46,6 +46,12 @@
             </meta>
         </property>
 
+        <property name="web_users" type="web_users_selection" colspan="6">
+            <meta>
+                <title>app.web_users</title>
+            </meta>
+        </property>
+
         <property name="description" type="text_editor">
             <meta>
                 <title>app.description</title>
