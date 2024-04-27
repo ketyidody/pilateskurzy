@@ -34,6 +34,9 @@ body:not(.no-full-height) section {
 .padding-top-30 {
   padding-top: 30px !important;
 }
+.padding-bottom-20 {
+  padding-bottom: 20px !important;
+}
 .margin-top-30 {
   margin-top: 30px;
 }
