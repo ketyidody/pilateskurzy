@@ -559,7 +559,7 @@ ol {
 ---------------------*/
 
 .about-section {
-	padding-left: 227px;
+	padding: 20px 227px;
 }
 
 .about-content-warp {
@@ -1209,7 +1209,7 @@ ol {
 		font-size: 27px;
 	}
 	.about-section {
-		padding-left: 150px;
+		padding: 15px 150px;
 	}
 	.sp-about-section .sp-about-content h2 {
 		font-size: 30px;
@@ -1243,7 +1243,7 @@ ol {
 		margin-left: 0;
 	}
 	.about-section {
-		padding-left: 120px;
+		padding: 10px 120px;
 	}
 	.banner-section h2 {
 		font-size: 27px;
