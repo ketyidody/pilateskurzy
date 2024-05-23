@@ -59,6 +59,13 @@
                 method: 'POST',
                 success: function (data) {
                     $('.js-calendar-container').empty();
+                    if (data.length === 0) {
+                        $('.js-calendar-container').append(
+                            "<div class='event-row no-margin js-event-row col-xs-12 col-md-6'>" +
+                            "Aktuálne neprebiehajú žiadné workshopy" +
+                            "</div>"
+                        );
+                    }
                     $.each(data, function () {
                         $('.js-calendar-container').append(
                             this
