@@ -10,7 +10,7 @@ class EventRepository extends EntityRepository
     public function findByUser(WebUser $user)
     {
         $qb = $this->createQueryBuilder("e")
-            ->where(':user MEMBER OF e.users')
+            ->where(':user MEMBER OF e.webUsers')
             ->setParameters(array('user' => $user))
         ;
         return $qb->getQuery()->getResult();
