@@ -376,6 +376,9 @@ button:disabled {
   flex-direction: column;
   justify-content: space-between;
 }
+.table th {
+  border-top: none !important;
+}
 .table td {
   border: none !important;
 }
